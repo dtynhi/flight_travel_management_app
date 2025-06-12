@@ -4,7 +4,6 @@ import React from 'react';
 import 'react-virtualized/styles.css';
 import App from './App.js';
 import '~/index.css';
-import '@mantine/charts/styles.css';
 import '@mantine/core/styles.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
