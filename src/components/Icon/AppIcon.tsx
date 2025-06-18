@@ -22,10 +22,12 @@ import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import { PiCreditCard } from 'react-icons/pi';
 import { GoLinkExternal } from 'react-icons/go';
+import { FaPlaneDeparture } from 'react-icons/fa';
+
 function AppIcon() {
   return <span>You have not select App Icon</span>;
 }
-
+AppIcon.Plane = FaPlaneDeparture;
 AppIcon.Plus = FaPlus;
 AppIcon.Filter = MdOutlineFilterAlt;
 AppIcon.Sync = IoSync;

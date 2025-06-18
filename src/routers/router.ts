@@ -91,6 +91,10 @@ const routers = {
     serverError: '/5xx',
     forbidden: '/403',
     notFound: '/404'
+  },
+  booking: {
+    pathName: 'booking',
+    fullPath: '/booking'
   }
 } as const;
 

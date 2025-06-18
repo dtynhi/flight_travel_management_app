@@ -24,6 +24,9 @@ import Forbidden from '~/pages/error/ForbiddenPage';
 import Home from '~/pages/home/Home';
 const Settings = lazy(() => import('~/pages/settings/Settings'));
 
+// Booking
+import Booking from '~/pages/booking/booking';
+
 export default function useRouteElement() {
   return useRoutes([
     // Main Layout Route
@@ -43,6 +46,10 @@ export default function useRouteElement() {
                   <Settings />
                 </Suspense>
               )
+            },
+            {
+              path: routers.booking.pathName,
+              element: <Booking />
             }
           ]
         }

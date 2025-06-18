@@ -44,7 +44,14 @@ function SideBar() {
         label: 'Settings',
         icon: <AppIcon.Setting size={18} />,
         onClick: () => changeTab(routers.settings.fullPath)
+      },
+      {
+        key: routers.booking.fullPath,
+        icon: <AppIcon.Plane size={18} />, // hoặc icon nào bạn có
+        label: 'Booking',
+        onClick: () => changeTab(routers.booking.fullPath)
       }
+
     ] as MenuProps['items'];
     return items;
     // eslint-disable-next-line react-hooks/exhaustive-deps
