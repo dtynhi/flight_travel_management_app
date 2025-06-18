@@ -34,6 +34,10 @@ const routers = {
     pathName: 'listings',
     fullPath: '/listings'
   },
+  search: {
+    pathName: 'search',
+    fullPath: '/search'
+  },
   inventories: {
     pathName: 'inventories',
     fullPath: '/inventories'
@@ -86,6 +90,18 @@ const routers = {
     pathName: 'settings',
     fullPath: '/settings'
   },
+  addFlight: {
+    pathName: 'add-flight',
+    fullPath: '/add-flight'
+  },
+  flightList: {
+    pathName: 'flights',
+    fullPath: '/flights'
+  },
+  editFlight: {
+    pathName: 'flights/:id',
+    fullPath: '/flights/:id'
+  },
   error: {
     allError: '*',
     serverError: '/5xx',
@@ -95,3 +111,4 @@ const routers = {
 } as const;
 
 export default routers;
+

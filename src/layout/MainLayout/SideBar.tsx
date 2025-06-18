@@ -37,6 +37,18 @@ function SideBar() {
         onClick: () => changeTab(routers.home.fullPath)
       },
       {
+        key: routers.addFlight.fullPath,
+        icon: <AppIcon.Plus size={18} />,
+        label: 'Thêm chuyến bay',
+        onClick: () => changeTab(routers.addFlight.fullPath)
+      },
+      {
+        key: routers.flightList.fullPath,
+        icon: <AppIcon.List size={18} />,
+        label: 'Danh sách chuyến bay',
+        onClick: () => changeTab(routers.flightList.fullPath)
+      },
+      {
         type: 'divider'
       },
       {
@@ -47,7 +59,6 @@ function SideBar() {
       }
     ] as MenuProps['items'];
     return items;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -68,3 +79,4 @@ function SideBar() {
 }
 
 export default SideBar;
+

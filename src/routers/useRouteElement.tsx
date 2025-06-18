@@ -2,31 +2,40 @@
 import { useRoutes } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
+
 import routers from './router';
 import FallBack from '~/components/FallBack';
 // Permission
 import { RejectRoute, ProtectedRoute } from './PermissionRoute';
 
+
 // Layout
 import AuthLayout from '~/layout/AuthLayout';
 import MainLayout from '~/layout/MainLayout';
+
 
 // Auth
 import Login from '~/pages/auth/login';
 import Register from '~/pages/auth/register';
 import ResetPassword from '~/pages/auth/reset-password';
 
+
 // Error page
 import NotFound from '~/pages/error/NotFoundPage';
 import Forbidden from '~/pages/error/ForbiddenPage';
 
+
 // Page
 import Home from '~/pages/home/Home';
 const Settings = lazy(() => import('~/pages/settings/Settings'));
+import SearchResult from '~/pages/search/SearchResult';
+import AddFlight from '~/pages/flight/AddFlight';
+import FlightList from '~/pages/flight/FlightList';
+import EditFlight from '~/pages/flight/EditFlight';
+
 
 export default function useRouteElement() {
   return useRoutes([
-    // Main Layout Route
     {
       path: '',
       element: <ProtectedRoute />,
@@ -43,12 +52,15 @@ export default function useRouteElement() {
                   <Settings />
                 </Suspense>
               )
-            }
+            },
+            { path: routers.search.pathName, element: <SearchResult /> },
+            { path: routers.addFlight.pathName, element: <AddFlight /> },
+            { path: routers.flightList.pathName, element: <FlightList /> },
+            { path: routers.editFlight.pathName, element: <EditFlight/> } // Route edit flight
           ]
         }
       ]
     },
-
     {
       path: '',
       element: <RejectRoute />,
@@ -69,9 +81,11 @@ export default function useRouteElement() {
         }
       ]
     },
-    // Error Route
     { path: routers.error.forbidden, element: <Forbidden /> },
     { path: routers.error.notFound, element: <NotFound /> },
     { path: routers.error.allError, element: <NotFound /> }
   ]);
 }
+
+
+

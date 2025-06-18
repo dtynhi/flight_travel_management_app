@@ -26,6 +26,7 @@ const queryClient = new QueryClient({
     }
   }
 });
+
 function App() {
   const routeElements = useRouteElement();
   const navigate = useNavigate();
