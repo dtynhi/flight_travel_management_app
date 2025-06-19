@@ -102,6 +102,10 @@ const routers = {
     pathName: 'flights/:id',
     fullPath: '/flights/:id'
   },
+  flightSearch: {
+    pathName: 'flight-search',
+    fullPath: '/flight-search'
+  },
   error: {
     allError: '*',
     serverError: '/5xx',

@@ -28,7 +28,7 @@ import Forbidden from '~/pages/error/ForbiddenPage';
 // Page
 import Home from '~/pages/home/Home';
 const Settings = lazy(() => import('~/pages/settings/Settings'));
-import SearchResult from '~/pages/search/SearchResult';
+import FlightSearchPage from '~/pages/search/FlightSearchPage';
 import AddFlight from '~/pages/flight/AddFlight';
 import FlightList from '~/pages/flight/FlightList';
 import EditFlight from '~/pages/flight/EditFlight';
@@ -53,10 +53,10 @@ export default function useRouteElement() {
                 </Suspense>
               )
             },
-            { path: routers.search.pathName, element: <SearchResult /> },
             { path: routers.addFlight.pathName, element: <AddFlight /> },
             { path: routers.flightList.pathName, element: <FlightList /> },
-            { path: routers.editFlight.pathName, element: <EditFlight/> } // Route edit flight
+            { path: routers.editFlight.pathName, element: <EditFlight/> }, // Route edit flight
+            { path: routers.flightSearch.pathName, element: <FlightSearchPage /> }
           ]
         }
       ]
