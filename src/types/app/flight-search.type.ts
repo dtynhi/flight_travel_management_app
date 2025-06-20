@@ -1,0 +1,25 @@
+export interface IFlightSearchParams {
+  departureAirport?: string;
+  arrivalAirport?: string;
+  flightDate?: string;
+}
+
+export interface IFlightSearchFormProps {
+  searchParams: IFlightSearchParams;
+  airports: IAirport[];
+  loading: boolean;
+  onParamChange: (field: keyof IFlightSearchParams, value: string) => void;
+  onSearch: () => void;
+  onReset: () => void;
+}
+
+export interface IFlightResultsTableProps {
+  flights: IFlight[];
+  loading: boolean;
+  searchPerformed: boolean;
+  searchParams: IFlightSearchParams;
+}
+
+// Re-export for convenience
+export type { IAirport } from './airport.type';
+export type { IFlight } from './flight.type';

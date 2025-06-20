@@ -49,6 +49,12 @@ function SideBar() {
         onClick: () => changeTab(routers.flightList.fullPath)
       },
       {
+        key: routers.flightSearch.fullPath,
+        icon: <AppIcon.Listing size={18} />,
+        label: 'Tra cứu chuyến bay',
+        onClick: () => changeTab(routers.flightSearch.fullPath)
+      },
+      {
         type: 'divider'
       },
       {
