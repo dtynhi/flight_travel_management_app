@@ -4,29 +4,29 @@ import { Suspense, lazy } from 'react';
 
 import routers from './router';
 import FallBack from '~/components/FallBack';
-// Permission
 import { RejectRoute, ProtectedRoute } from './PermissionRoute';
 
 // Layout
 import AuthLayout from '~/layout/AuthLayout';
 import MainLayout from '~/layout/MainLayout';
 
-// Auth
+// Auth pages
 import Login from '~/pages/auth/login';
 import Register from '~/pages/auth/register';
 import ResetPassword from '~/pages/auth/reset-password';
 
-// Error page
+// Error pages
 import NotFound from '~/pages/error/NotFoundPage';
 import Forbidden from '~/pages/error/ForbiddenPage';
 
-// Page
+// App pages
 import Home from '~/pages/home/Home';
+import ReportYear from '~/pages/report/ReportYear';
+import ReportMonth from '~/pages/report/ReportMonth';
 const Settings = lazy(() => import('~/pages/settings/Settings'));
 
 export default function useRouteElement() {
   return useRoutes([
-    // Main Layout Route
     {
       path: '',
       element: <ProtectedRoute />,
@@ -43,12 +43,24 @@ export default function useRouteElement() {
                   <Settings />
                 </Suspense>
               )
+            },
+            {
+              path: routers.report.pathName,
+              children: [
+                {
+                  path: routers.report.monthly.pathName,
+                  element: <ReportMonth />
+                },
+                {
+                  path: routers.report.yearly.pathName,
+                  element: <ReportYear />
+                }
+              ]
             }
           ]
         }
       ]
     },
-
     {
       path: '',
       element: <RejectRoute />,
@@ -69,7 +81,6 @@ export default function useRouteElement() {
         }
       ]
     },
-    // Error Route
     { path: routers.error.forbidden, element: <Forbidden /> },
     { path: routers.error.notFound, element: <NotFound /> },
     { path: routers.error.allError, element: <NotFound /> }

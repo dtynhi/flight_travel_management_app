@@ -16,6 +16,7 @@ const siderStyle: React.CSSProperties = {
 function SideBar() {
   const pathName = useLocation().pathname;
   const [activeKey, setActiveKey] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (pathName) {
@@ -23,44 +24,67 @@ function SideBar() {
     }
   }, [pathName]);
 
-  const navigate = useNavigate();
   const changeTab = (path: string) => {
     navigate(path);
   };
 
+  const userRole = 'ADMIN'; // ❗ Bạn có thể thay bằng logic lấy role từ context/store
+
   const menuItems: MenuProps['items'] = useMemo(() => {
-    const items = [
+    const items: MenuProps['items'] = [
       {
         key: routers.home.fullPath,
         icon: <AppIcon.Home size={18} />,
         label: 'Home',
         onClick: () => changeTab(routers.home.fullPath)
-      },
-      {
-        type: 'divider'
-      },
+      }
+    ];
+
+    if (userRole === 'ADMIN' || userRole === 'EMPLOYEE') {
+      items.push({
+        key: 'report',
+        label: 'Báo cáo',
+        icon: <AppIcon.Report size={18} />,
+        children: [
+          {
+            key: routers.report.monthly.fullPath,
+            label: 'Báo cáo tháng',
+            onClick: () => changeTab(routers.report.monthly.fullPath)
+          },
+          {
+            key: routers.report.yearly.fullPath,
+            label: 'Báo cáo năm',
+            onClick: () => changeTab(routers.report.yearly.fullPath)
+          }
+        ]
+      });
+    }
+
+    items.push(
+      { type: 'divider' },
       {
         key: routers.settings.fullPath,
         label: 'Settings',
         icon: <AppIcon.Setting size={18} />,
         onClick: () => changeTab(routers.settings.fullPath)
       }
-    ] as MenuProps['items'];
+    );
+
     return items;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userRole]);
 
   return (
-    <Sider style={siderStyle} collapsible theme='light'>
+    <Sider style={siderStyle} collapsible theme="light">
       <Menu
         selectedKeys={[activeKey]}
         onClick={({ key }) => {
           setActiveKey(key);
+          changeTab(key);
         }}
         style={{ height: 'calc(100% - 60px)', overflowY: 'auto' }}
         inlineIndent={16}
-        mode='inline'
-        theme='light'
+        mode="inline"
+        theme="light"
         items={menuItems}
       />
     </Sider>
