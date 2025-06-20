@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { message } from 'antd';
-import axios from 'axios';
+import { App } from 'antd';
 
 import type { IFlight, IFlightSearchParams } from '~/types/app/flight-search.type';
+import flightApi from '~/api/app/flight.api';
 
 interface IUseFlightSearchReturn {
   searchResults: IFlight[];
@@ -14,6 +14,7 @@ interface IUseFlightSearchReturn {
 }
 
 const useFlightSearch = (): IUseFlightSearchReturn => {
+  const { message } = App.useApp();
   const [searchResults, setSearchResults] = useState<IFlight[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,39 +31,16 @@ const useFlightSearch = (): IUseFlightSearchReturn => {
     setError(null);
     
     try {
-      // Build query parameters
-      const queryParams = new URLSearchParams();
+      console.log('🔍 Searching flights with params:', params);
+
+      // Use your backend API
+      const response = await flightApi.searchFlights(params);
       
-      if (params.departureAirport) {
-        queryParams.append('departureAirport', params.departureAirport);
-      }
-      if (params.arrivalAirport) {
-        queryParams.append('arrivalAirport', params.arrivalAirport);
-      }
-      if (params.flightDate) {
-        queryParams.append('flightDate', params.flightDate);
-      }
-
-      console.log('🔍 Searching flights with params:', queryParams.toString());
-
-      // Call search API
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/flight/search?${queryParams.toString()}`
-      );
-
       console.log('Flight Search API Response:', response.data);
 
-      // Extract flights from the nested response structure
-      let searchResults = [];
+      // Your backend returns: { data: { flights: [...], total: number } }
+      const searchResults = response.data.data?.flights || [];
       
-      if (response.data && response.data.data) {
-        if (response.data.data.flights && Array.isArray(response.data.data.flights)) {
-          searchResults = response.data.data.flights;
-        } else if (Array.isArray(response.data.data)) {
-          searchResults = response.data.data;
-        }
-      }
-
       console.log('Processed search results:', searchResults);
 
       setSearchResults(searchResults);
@@ -73,8 +51,8 @@ const useFlightSearch = (): IUseFlightSearchReturn => {
       } else {
         message.success(`Tìm thấy ${searchResults.length} chuyến bay`);
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Lỗi khi tìm kiếm chuyến bay';
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || 'Lỗi khi tìm kiếm chuyến bay';
       setError(errorMessage);
       message.error(errorMessage);
       console.error('Flight search error:', err);

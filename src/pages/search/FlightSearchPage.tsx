@@ -19,10 +19,7 @@ const FlightSearchPage: React.FC = () => {
   } = useFlightSearch();
 
   const handleParamChange = (field: keyof IFlightSearchParams, value: string) => {
-    setSearchParams(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setSearchParams(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSearch = async () => {

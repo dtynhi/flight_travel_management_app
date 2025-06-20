@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { message } from 'antd';
-import axios from 'axios';
+import { App } from 'antd';
 
 import type { IAirport } from '~/types/app/airport.type';
+import airportApi from '~/api/app/airport.api';
 
 interface IUseAirportReturn {
   airports: IAirport[];
@@ -12,6 +12,8 @@ interface IUseAirportReturn {
 }
 
 const useAirport = (): IUseAirportReturn => {
+  const { message } = App.useApp();
+  
   const [airports, setAirports] = useState<IAirport[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,23 +23,25 @@ const useAirport = (): IUseAirportReturn => {
     setError(null);
     
     try {
-      console.log('Fetching airports from API...');
+      console.log('🔍 Fetching airports from API...');
       
-      const response = await axios.get('http://localhost:5000/api/v1/airport/');
+      // Use your backend API
+      const response = await airportApi.getAllAirports();
       
       console.log('Airport API Response:', response.data);
       
+      // Your backend returns: { data: [...] }
       const airportData = response.data.data || [];
       setAirports(airportData);
       console.log('Airports loaded:', airportData.length);
       
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Không thể tải danh sách sân bay';
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || 'Không thể tải danh sách sân bay';
       setError(errorMessage);
       console.error('Airport fetch error:', err);
       
       // Fallback to mock data
-      const mockAirports = [
+      const mockAirports: IAirport[] = [
         { 
           id: 1, 
           airportName: 'Tan Son Nhat International Airport',
