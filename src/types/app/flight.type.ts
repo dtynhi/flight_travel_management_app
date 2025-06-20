@@ -12,6 +12,18 @@ export default interface IFlight {
   status: string;
   createdAt: string;
   updatedAt: string;
+  ticketClasses?: IFlightTicketClass[]; // For seat calculation
+}
+
+export interface IFlightTicketClass {
+  id: number;
+  flightId: number;
+  ticketClassId: number;
+  totalSeats: number;
+  availableSeats: number;
+  priceMultiplier: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ICreateFlightRequest {

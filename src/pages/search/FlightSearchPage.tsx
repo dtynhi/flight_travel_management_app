@@ -4,7 +4,7 @@ import { Card } from 'antd';
 import type { IFlightSearchParams } from '~/types/app/flight-search.type';
 import useAirport from '~/hooks/useAirport';
 import useFlightSearch from '~/hooks/useFlightSearch';
-import { FlightSearchForm, FlightResultsTable } from './components';
+import { FlightSearchForm, FlightResultsTable } from '~/components/FlightSearch';
 
 const FlightSearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useState<IFlightSearchParams>({});
