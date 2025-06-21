@@ -47,6 +47,11 @@ function SideBar() {
         label: 'Tra cứu chuyến bay'
       },
       {
+        key: routers.booking.fullPath,
+        icon: <AppIcon.Plane size={18} />,
+        label: 'Booking'
+      },
+      {
         key: routers.flightList.fullPath,
         icon: <AppIcon.List size={18} />,
         authorities: ['ADMIN', 'EMPLOYEE'],
