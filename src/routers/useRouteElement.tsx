@@ -29,6 +29,10 @@ import AddFlight from '~/pages/flight/AddFlight';
 import Permission from '~/components/Permission/Permission';
 import Booking from '~/pages/booking/booking';
 
+//regulation
+import RegulationPage from '~/pages/regulation/regulation';
+
+
 export default function useRouteElement() {
   return useRoutes([
     {
@@ -67,6 +71,10 @@ export default function useRouteElement() {
             {
               path: routers.booking.pathName,
               element: <Booking />
+            },
+            {
+              path: routers.regulation.pathName,
+              element: <RegulationPage />
             }
           ]
         }

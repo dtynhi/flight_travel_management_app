@@ -8,6 +8,8 @@ import AppIcon from '~/components/Icon/AppIcon';
 import { AppContext } from '~/context/app.context';
 import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 
+import { FileTextOutlined } from '@ant-design/icons'; // icon mặc định từ antd
+
 const siderStyle: React.CSSProperties = {
   color: '#fff',
   height: '100vh',
@@ -44,7 +46,7 @@ function SideBar() {
       {
         key: routers.booking.fullPath,
         icon: <AppIcon.Plane size={18} />,
-        label: 'Booking'
+        label: 'Đặt vé máy bay'
       },
 
       {
@@ -68,6 +70,12 @@ function SideBar() {
             label: 'Báo cáo năm'
           }
         ]
+      },
+      {
+        key: routers.regulation.fullPath,
+        icon: <FileTextOutlined />,
+        label: 'Quy định',
+        authorities: ['ADMIN', 'EMPLOYEE']
       },
       {
         type: 'divider'
