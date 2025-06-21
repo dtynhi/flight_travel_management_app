@@ -52,7 +52,7 @@ function SideBar() {
       {
         key: routers.booking.fullPath,
         icon: <AppIcon.Plane size={18} />, // hoặc icon nào bạn có
-        label: 'Booking',
+        label: 'Mua vé máy bay',
         onClick: () => changeTab(routers.booking.fullPath)
       },
       {
