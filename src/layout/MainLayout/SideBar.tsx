@@ -1,4 +1,4 @@
-import { Menu, MenuProps } from 'antd';
+import { Menu } from 'antd';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Sider from 'antd/es/layout/Sider';
@@ -6,6 +6,7 @@ import Sider from 'antd/es/layout/Sider';
 import routers from '~/routers/router';
 import AppIcon from '~/components/Icon/AppIcon';
 import { AppContext } from '~/context/app.context';
+import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 
 const siderStyle: React.CSSProperties = {
   color: '#fff',
@@ -14,75 +15,94 @@ const siderStyle: React.CSSProperties = {
   overflowY: 'auto'
 };
 
+type IRole = 'ADMIN' | 'EMPLOYEE' | 'USER';
+
+type ISideBarItems = ItemType<MenuItemType> & {
+  authorities?: IRole[];
+};
+
 function SideBar() {
-  const pathName = useLocation().pathname;
+  const { pathname } = useLocation();
   const [activeKey, setActiveKey] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (pathName) {
-      setActiveKey(pathName);
-    }
-  }, [pathName]);
-
-  const changeTab = (path: string) => {
-    navigate(path);
-  };
-
   const { profile } = useContext(AppContext);
 
-  const menuItems: MenuProps['items'] = useMemo(() => {
-    const items: MenuProps['items'] = [
+  // Update active key when pathname changes
+  useEffect(() => {
+    if (pathname) {
+      setActiveKey(pathname);
+    }
+  }, [pathname]);
+
+  const menuItems: ISideBarItems[] = useMemo(() => {
+    const items: ISideBarItems[] = [
       {
         key: routers.home.fullPath,
         icon: <AppIcon.Home size={18} />,
-        label: 'Home',
-        onClick: () => changeTab(routers.home.fullPath)
-      }
-    ];
-
-    items.push(
-      { type: 'divider' },
+        label: 'Trang chủ'
+      },
       {
         key: routers.addFlight.fullPath,
         icon: <AppIcon.Plus size={18} />,
-        label: 'Thêm chuyến bay',
-        onClick: () => changeTab(routers.addFlight.fullPath)
+        label: 'Thêm chuyến bay'
       },
       {
         key: routers.flightList.fullPath,
         icon: <AppIcon.List size={18} />,
-        label: 'Danh sách chuyến bay',
-        onClick: () => changeTab(routers.flightList.fullPath)
+        label: 'Danh sách chuyến bay'
       },
       {
         key: routers.flightSearch.fullPath,
         icon: <AppIcon.Listing size={18} />,
-        label: 'Tra cứu chuyến bay',
-        onClick: () => changeTab(routers.flightSearch.fullPath)
+        label: 'Tra cứu chuyến bay'
+      },
+      {
+        key: 'report',
+        label: 'Báo cáo',
+        icon: <AppIcon.Report size={18} />,
+        authorities: ['ADMIN', 'EMPLOYEE'],
+        children: [
+          {
+            key: routers.report.monthly.fullPath,
+            label: 'Báo cáo tháng'
+          },
+          {
+            key: routers.report.yearly.fullPath,
+            label: 'Báo cáo năm'
+          }
+        ]
       },
       {
         type: 'divider'
       },
       {
         key: routers.settings.fullPath,
-        label: 'Settings',
-        icon: <AppIcon.Setting size={18} />,
-        onClick: () => changeTab(routers.settings.fullPath)
+        label: 'Cài đặt',
+        icon: <AppIcon.Setting size={18} />
       }
-    );
+    ] as ISideBarItems[];
 
-    return items;
-  }, [profile?.roles]);
+    // Filter items based on user roles
+    return items.filter((item) => {
+      if (!item?.authorities?.length) {
+        return true;
+      }
+
+      const userRoles = Array.isArray(profile?.role) ? profile.role : [profile?.role];
+      return item.authorities.some((authority) => userRoles.includes(authority));
+    });
+  }, [profile?.role]);
+
+  const handleMenuClick = (key: string) => {
+    setActiveKey(key);
+    navigate(key);
+  };
 
   return (
     <Sider style={siderStyle} collapsible theme='light'>
       <Menu
         selectedKeys={[activeKey]}
-        onClick={({ key }) => {
-          setActiveKey(key);
-          changeTab(key);
-        }}
+        onClick={({ key }) => handleMenuClick(key)}
         style={{ height: 'calc(100% - 60px)', overflowY: 'auto' }}
         inlineIndent={16}
         mode='inline'

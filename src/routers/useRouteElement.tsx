@@ -28,6 +28,7 @@ import FlightSearchPage from '~/pages/search/FlightSearchPage';
 import AddFlight from '~/pages/flight/AddFlight';
 import FlightList from '~/pages/flight/FlightList';
 import EditFlight from '~/pages/flight/EditFlight';
+import Permission from '~/components/Permission/Permission';
 
 export default function useRouteElement() {
   return useRoutes([
@@ -50,6 +51,7 @@ export default function useRouteElement() {
             },
             {
               path: routers.report.pathName,
+              element: <Permission.Outlet hasAuthority={['ADMIN', 'EMPLOYEE']} fallback={<Forbidden />} />,
               children: [
                 {
                   path: routers.report.monthly.pathName,
