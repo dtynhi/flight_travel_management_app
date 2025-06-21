@@ -1,4 +1,9 @@
-import { FaAngleDown, FaPlus, FaRegClone, FaRegFileExcel } from 'react-icons/fa';
+import {
+  FaAngleDown,
+  FaPlus,
+  FaRegClone,
+  FaRegFileExcel
+} from 'react-icons/fa';
 import {
   MdOutlineFilterAlt,
   MdOutlineFileDownload,
@@ -8,24 +13,36 @@ import {
   MdOutlineStorefront,
   MdOutlineAnalytics
 } from 'react-icons/md';
-import { IoCheckmark, IoHomeOutline, IoSettingsOutline, IoShareSocialOutline, IoSync } from 'react-icons/io5';
+import {
+  IoCheckmark,
+  IoHomeOutline,
+  IoSettingsOutline,
+  IoShareSocialOutline,
+  IoSync
+} from 'react-icons/io5';
 import { FiAlertCircle, FiEdit } from 'react-icons/fi';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { CgSpinnerTwo } from 'react-icons/cg';
 import { LiaClipboardListSolid } from 'react-icons/lia';
 import { LuMailPlus, LuPackage } from 'react-icons/lu';
 import { IoIosHelpCircleOutline, IoMdClose } from 'react-icons/io';
-import { CiExport, CiImport, CiCircleCheck, CiWarning } from 'react-icons/ci';
+import {
+  CiExport,
+  CiImport,
+  CiCircleCheck,
+  CiWarning
+} from 'react-icons/ci';
 import { AiOutlineProduct, AiOutlineRedo } from 'react-icons/ai';
-import { GoOrganization } from 'react-icons/go';
+import { GoOrganization, GoLinkExternal } from 'react-icons/go';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import { PiCreditCard } from 'react-icons/pi';
-import { GoLinkExternal } from 'react-icons/go';
+
 function AppIcon() {
   return <span>You have not select App Icon</span>;
 }
 
+// Gán các icon vào AppIcon như thuộc tính
 AppIcon.Plus = FaPlus;
 AppIcon.Filter = MdOutlineFilterAlt;
 AppIcon.Sync = IoSync;
@@ -36,6 +53,7 @@ AppIcon.Download = MdOutlineFileDownload;
 AppIcon.Loading = CgSpinnerTwo;
 AppIcon.Home = IoHomeOutline;
 AppIcon.Order = LiaClipboardListSolid;
+AppIcon.List = LiaClipboardListSolid; // ✅ thêm dòng này để sửa lỗi
 AppIcon.Listing = AiOutlineProduct;
 AppIcon.Excel = FaRegFileExcel;
 AppIcon.Product = LuPackage;
@@ -62,4 +80,6 @@ AppIcon.Warning = CiWarning;
 AppIcon.Alert = FiAlertCircle;
 AppIcon.CheckCircle = CiCircleCheck;
 AppIcon.Analytic = MdOutlineAnalytics;
+
 export default AppIcon;
+

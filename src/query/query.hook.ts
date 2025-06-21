@@ -4,11 +4,10 @@ import { numberUtil } from '~/utils';
 import useQueryParams from '~/hooks/useQueryParams';
 import { IBaseQueryRequest, IFinanceQueryRequest } from './query.type';
 import { timeUtil } from '~/utils';
-import { MarketplaceEnum } from '~/constant/app.constant';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TGetBaseQueryConfig = (params: any, requiredMarket?: boolean) => IBaseQueryRequest;
-const getBaseQueryConfig: TGetBaseQueryConfig = (params, requiredMarket = true): IBaseQueryRequest => {
+const getBaseQueryConfig: TGetBaseQueryConfig = (params): IBaseQueryRequest => {
   if (typeof params !== 'object') {
     params = {};
   }
@@ -23,7 +22,6 @@ const getBaseQueryConfig: TGetBaseQueryConfig = (params, requiredMarket = true):
     deleted: ['1', '0', 'true', 'false'].includes(params?.deleted) ? params?.deleted : '',
     fromTime: timeUtil.isValidDateQuery(params?.fromTime) ? params?.fromTime : '',
     toTime: timeUtil.isValidDateQuery(params?.toTime) ? params?.toTime : '',
-    markets: params?.markets || (requiredMarket ? MarketplaceEnum.US : ''), // Default us market,
     sellerIds: params?.sellerIds || '',
     statuses: params?.statuses || '',
     types: params?.types || ''

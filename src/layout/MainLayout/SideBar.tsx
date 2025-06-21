@@ -1,10 +1,11 @@
 import { Menu, MenuProps } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Sider from 'antd/es/layout/Sider';
 
 import routers from '~/routers/router';
 import AppIcon from '~/components/Icon/AppIcon';
+import { AppContext } from '~/context/app.context';
 
 const siderStyle: React.CSSProperties = {
   color: '#fff',
@@ -28,7 +29,7 @@ function SideBar() {
     navigate(path);
   };
 
-  const userRole = 'ADMIN'; // ❗ Bạn có thể thay bằng logic lấy role từ context/store
+  const { profile } = useContext(AppContext);
 
   const menuItems: MenuProps['items'] = useMemo(() => {
     const items: MenuProps['items'] = [
@@ -40,28 +41,29 @@ function SideBar() {
       }
     ];
 
-    if (userRole === 'ADMIN' || userRole === 'EMPLOYEE') {
-      items.push({
-        key: 'report',
-        label: 'Báo cáo',
-        icon: <AppIcon.Report size={18} />,
-        children: [
-          {
-            key: routers.report.monthly.fullPath,
-            label: 'Báo cáo tháng',
-            onClick: () => changeTab(routers.report.monthly.fullPath)
-          },
-          {
-            key: routers.report.yearly.fullPath,
-            label: 'Báo cáo năm',
-            onClick: () => changeTab(routers.report.yearly.fullPath)
-          }
-        ]
-      });
-    }
-
     items.push(
       { type: 'divider' },
+      {
+        key: routers.addFlight.fullPath,
+        icon: <AppIcon.Plus size={18} />,
+        label: 'Thêm chuyến bay',
+        onClick: () => changeTab(routers.addFlight.fullPath)
+      },
+      {
+        key: routers.flightList.fullPath,
+        icon: <AppIcon.List size={18} />,
+        label: 'Danh sách chuyến bay',
+        onClick: () => changeTab(routers.flightList.fullPath)
+      },
+      {
+        key: routers.flightSearch.fullPath,
+        icon: <AppIcon.Listing size={18} />,
+        label: 'Tra cứu chuyến bay',
+        onClick: () => changeTab(routers.flightSearch.fullPath)
+      },
+      {
+        type: 'divider'
+      },
       {
         key: routers.settings.fullPath,
         label: 'Settings',
@@ -71,10 +73,10 @@ function SideBar() {
     );
 
     return items;
-  }, [userRole]);
+  }, [profile?.roles]);
 
   return (
-    <Sider style={siderStyle} collapsible theme="light">
+    <Sider style={siderStyle} collapsible theme='light'>
       <Menu
         selectedKeys={[activeKey]}
         onClick={({ key }) => {
@@ -83,8 +85,8 @@ function SideBar() {
         }}
         style={{ height: 'calc(100% - 60px)', overflowY: 'auto' }}
         inlineIndent={16}
-        mode="inline"
-        theme="light"
+        mode='inline'
+        theme='light'
         items={menuItems}
       />
     </Sider>
