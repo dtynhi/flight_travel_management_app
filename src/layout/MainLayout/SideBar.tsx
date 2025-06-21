@@ -6,6 +6,10 @@ import Sider from 'antd/es/layout/Sider';
 import routers from '~/routers/router';
 import AppIcon from '~/components/Icon/AppIcon';
 
+import { FileTextOutlined } from '@ant-design/icons'; // icon mặc định từ antd
+
+
+
 const siderStyle: React.CSSProperties = {
   color: '#fff',
   height: '100vh',
@@ -50,7 +54,14 @@ function SideBar() {
         icon: <AppIcon.Plane size={18} />, // hoặc icon nào bạn có
         label: 'Booking',
         onClick: () => changeTab(routers.booking.fullPath)
+      },
+      {
+        key: routers.regulation.fullPath,
+        icon: <FileTextOutlined />,
+        label: 'Regulation',
+        onClick: () => changeTab(routers.regulation.fullPath)
       }
+
 
     ] as MenuProps['items'];
     return items;

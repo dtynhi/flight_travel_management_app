@@ -41,7 +41,8 @@ function App() {
                     ...theme
                   }}
                 >
-                  <MantineProvider>{routeElements}</MantineProvider>
+                  <MantineProvider>{routeElements}
+                  </MantineProvider>
                 </ConfigProvider>
               </StyleProvider>
             </ApplicationEventListener>

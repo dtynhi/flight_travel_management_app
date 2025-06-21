@@ -27,6 +27,10 @@ const Settings = lazy(() => import('~/pages/settings/Settings'));
 // Booking
 import Booking from '~/pages/booking/booking';
 
+//regulation
+import RegulationPage from '~/pages/regulation/regulation';
+
+
 export default function useRouteElement() {
   return useRoutes([
     // Main Layout Route
@@ -50,6 +54,10 @@ export default function useRouteElement() {
             {
               path: routers.booking.pathName,
               element: <Booking />
+            },
+            {
+              path: routers.regulation.pathName,
+              element: <RegulationPage />
             }
           ]
         }

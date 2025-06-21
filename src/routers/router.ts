@@ -95,6 +95,10 @@ const routers = {
   booking: {
     pathName: 'booking',
     fullPath: '/booking'
+  },
+  regulation: {
+    pathName: 'regulations',
+    fullPath: '/regulations'
   }
 } as const;
 
