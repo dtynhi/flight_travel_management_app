@@ -71,4 +71,3 @@ const routers = {
 } as const;
 
 export default routers;
-
