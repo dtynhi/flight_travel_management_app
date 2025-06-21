@@ -1,4 +1,4 @@
-import { FaAngleDown, FaPlus, FaRegClone, FaRegFileExcel } from 'react-icons/fa';
+import { FaAngleDown, FaPlus, FaRegClone, FaRegFileExcel, FaPlaneDeparture } from 'react-icons/fa';
 import {
   MdOutlineFilterAlt,
   MdOutlineFileDownload,
@@ -17,16 +17,16 @@ import { LuMailPlus, LuPackage } from 'react-icons/lu';
 import { IoIosHelpCircleOutline, IoMdClose } from 'react-icons/io';
 import { CiExport, CiImport, CiCircleCheck, CiWarning } from 'react-icons/ci';
 import { AiOutlineProduct, AiOutlineRedo } from 'react-icons/ai';
-import { GoOrganization } from 'react-icons/go';
+import { GoOrganization, GoLinkExternal } from 'react-icons/go';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import { PiCreditCard } from 'react-icons/pi';
-import { GoLinkExternal } from 'react-icons/go';
-import { FaPlaneDeparture } from 'react-icons/fa';
 
 function AppIcon() {
   return <span>You have not select App Icon</span>;
 }
+
+// Gán các icon vào AppIcon như thuộc tính
 AppIcon.Plane = FaPlaneDeparture;
 AppIcon.Plus = FaPlus;
 AppIcon.Filter = MdOutlineFilterAlt;
@@ -38,6 +38,7 @@ AppIcon.Download = MdOutlineFileDownload;
 AppIcon.Loading = CgSpinnerTwo;
 AppIcon.Home = IoHomeOutline;
 AppIcon.Order = LiaClipboardListSolid;
+AppIcon.List = LiaClipboardListSolid; // ✅ thêm dòng này để sửa lỗi
 AppIcon.Listing = AiOutlineProduct;
 AppIcon.Excel = FaRegFileExcel;
 AppIcon.Product = LuPackage;
@@ -64,4 +65,5 @@ AppIcon.Warning = CiWarning;
 AppIcon.Alert = FiAlertCircle;
 AppIcon.CheckCircle = CiCircleCheck;
 AppIcon.Analytic = MdOutlineAnalytics;
+
 export default AppIcon;

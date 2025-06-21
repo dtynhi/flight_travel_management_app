@@ -36,7 +36,7 @@ function SettingSecurity() {
 
   return (
     <div className='w-100 max-w-[600px] flex flex-col justify-center m-auto'>
-      <h1 className='font-semibold text-xl mb-5 text-center'>Change Your Password</h1>
+      <h1 className='font-semibold text-xl mb-5 text-center'>Đổi mật khẩu</h1>
       <Form
         onFinish={handleSubmit}
         requiredMark={requiredMarkRender('font-semibold me-1')}
@@ -46,14 +46,14 @@ function SettingSecurity() {
         validateTrigger={['onBlur', 'onSubmit']}
       >
         <Form.Item
-          label={<span className='font-semibold'>Current Password</span>}
+          label={<span className='font-semibold'>Mật khẩu hiện tại</span>}
           name='current_password'
           rules={[
-            { required: true, message: 'Please input your current password!' },
+            { required: true, message: 'Hãy nhập mật khẩu hiện tại!' },
             {
               min: 6,
               max: 32,
-              message: 'Password must contain 6 to 32 characters.'
+              message: 'Mật khẩu phải chứa từ 8 đến 32 ký tự.'
             }
           ]}
         >
@@ -61,14 +61,14 @@ function SettingSecurity() {
         </Form.Item>
 
         <Form.Item
-          label={<span className='font-semibold'>New Password</span>}
+          label={<span className='font-semibold'>Mật khẩu mới</span>}
           name='new_password'
           rules={[
-            { required: true, message: 'Please input your new password!' },
+            { required: true, message: 'Hãy nhập lại mật khẩu mới!' },
             {
               min: 6,
               max: 32,
-              message: 'Password must contain 8 to 32 characters.'
+              message: 'Mật khẩu phải chứa từ 8 đến 32 ký tự.'
             }
           ]}
         >
@@ -76,16 +76,16 @@ function SettingSecurity() {
         </Form.Item>
 
         <Form.Item
-          label={<span className='font-semibold'>Confirm Password</span>}
+          label={<span className='font-semibold'>Nhập lại mật khẩu mới</span>}
           name='confirm_password'
           rules={[
-            { required: true, message: 'Please input your confirm password!' },
-            ({ getFieldValue }: unknown) => ({
+            { required: true, message: 'Hãy nhập lại mật khẩu mới' },
+            ({ getFieldValue }: { getFieldValue: (name: string) => string }) => ({
               validator(_: unknown, value: string) {
                 if (!value || getFieldValue('new_password') === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject(new Error('The confirm password does not match!'));
+                return Promise.reject(new Error('Mật khẩu không khớp!'));
               }
             })
           ]}
@@ -94,7 +94,7 @@ function SettingSecurity() {
         </Form.Item>
         <Form.Item>
           <Button loading={isLoading} htmlType='submit' disabled={isLoading} type='primary'>
-            Update Password
+            Cập nhật mật khẩu
           </Button>
         </Form.Item>
       </Form>

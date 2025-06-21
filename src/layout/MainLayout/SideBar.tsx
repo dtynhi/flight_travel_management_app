@@ -1,14 +1,14 @@
-import { Menu, MenuProps } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
+import { Menu } from 'antd';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Sider from 'antd/es/layout/Sider';
 
 import routers from '~/routers/router';
 import AppIcon from '~/components/Icon/AppIcon';
+import { AppContext } from '~/context/app.context';
+import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 
 import { FileTextOutlined } from '@ant-design/icons'; // icon mặc định từ antd
-
-
 
 const siderStyle: React.CSSProperties = {
   color: '#fff',
@@ -17,64 +17,97 @@ const siderStyle: React.CSSProperties = {
   overflowY: 'auto'
 };
 
+type IRole = 'ADMIN' | 'EMPLOYEE' | 'USER';
+
+type ISideBarItems = ItemType<MenuItemType> & {
+  authorities?: IRole[];
+};
+
 function SideBar() {
-  const pathName = useLocation().pathname;
+  const { pathname } = useLocation();
   const [activeKey, setActiveKey] = useState('');
-
-  useEffect(() => {
-    if (pathName) {
-      setActiveKey(pathName);
-    }
-  }, [pathName]);
-
   const navigate = useNavigate();
-  const changeTab = (path: string) => {
-    navigate(path);
-  };
+  const { profile } = useContext(AppContext);
 
-  const menuItems: MenuProps['items'] = useMemo(() => {
-    const items = [
+  // Update active key when pathname changes
+  useEffect(() => {
+    if (pathname) {
+      setActiveKey(pathname);
+    }
+  }, [pathname]);
+
+  const menuItems: ISideBarItems[] = useMemo(() => {
+    const items: ISideBarItems[] = [
       {
-        key: routers.home.fullPath,
-        icon: <AppIcon.Home size={18} />,
-        label: 'Home',
-        onClick: () => changeTab(routers.home.fullPath)
+        key: routers.flightSearch.fullPath,
+        icon: <AppIcon.Listing size={18} />,
+        label: 'Tra cứu chuyến bay'
+      },
+      {
+        key: routers.booking.fullPath,
+        icon: <AppIcon.Plane size={18} />,
+        label: 'Đặt vé máy bay'
+      },
+
+      {
+        key: routers.addFlight.fullPath,
+        icon: <AppIcon.Plus size={18} />,
+        authorities: ['ADMIN', 'EMPLOYEE'],
+        label: 'Thêm chuyến bay'
+      },
+      {
+        key: 'report',
+        label: 'Báo cáo',
+        icon: <AppIcon.Report size={18} />,
+        authorities: ['ADMIN', 'EMPLOYEE'],
+        children: [
+          {
+            key: routers.report.monthly.fullPath,
+            label: 'Báo cáo tháng'
+          },
+          {
+            key: routers.report.yearly.fullPath,
+            label: 'Báo cáo năm'
+          }
+        ]
+      },
+      {
+        key: routers.regulation.fullPath,
+        icon: <FileTextOutlined />,
+        label: 'Quy định',
+        authorities: ['ADMIN', 'EMPLOYEE']
       },
       {
         type: 'divider'
       },
       {
         key: routers.settings.fullPath,
-        label: 'Settings',
-        icon: <AppIcon.Setting size={18} />,
-        onClick: () => changeTab(routers.settings.fullPath)
-      },
-      {
-        key: routers.booking.fullPath,
-        icon: <AppIcon.Plane size={18} />, // hoặc icon nào bạn có
-        label: 'Booking',
-        onClick: () => changeTab(routers.booking.fullPath)
-      },
-      {
-        key: routers.regulation.fullPath,
-        icon: <FileTextOutlined />,
-        label: 'Regulation',
-        onClick: () => changeTab(routers.regulation.fullPath)
+        label: 'Cài đặt',
+        icon: <AppIcon.Setting size={18} />
+      }
+    ] as ISideBarItems[];
+
+    // Filter items based on user roles
+    return items.filter((item) => {
+      if (!item?.authorities?.length) {
+        return true;
       }
 
+      const userRoles = Array.isArray(profile?.role) ? profile.role : [profile?.role];
+      return item.authorities.some((authority) => userRoles.includes(authority));
+    });
+  }, [profile?.role]);
 
-    ] as MenuProps['items'];
-    return items;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleMenuClick = (key: string) => {
+    setActiveKey(key);
+    navigate(key);
+  };
 
   return (
     <Sider style={siderStyle} collapsible theme='light'>
       <Menu
         selectedKeys={[activeKey]}
-        onClick={({ key }) => {
-          setActiveKey(key);
-        }}
+        onClick={({ key }) => handleMenuClick(key)}
         style={{ height: 'calc(100% - 60px)', overflowY: 'auto' }}
         inlineIndent={16}
         mode='inline'
