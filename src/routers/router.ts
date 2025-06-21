@@ -30,6 +30,10 @@ const routers = {
       fullPath: '/auth/pending-approval'
     }
   },
+  booking: {
+    pathName: 'booking',
+    fullPath: '/booking'
+  },
   report: {
     pathName: 'report',
     fullPath: '/report',
