@@ -22,6 +22,7 @@ export default function Booking() {
       setMessage('✅ Đặt vé thành công!');
     },
     onError: (error) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const err = error as AxiosError<any>;
       console.log('🔥 Lỗi backend:', err.response?.data?.debug);
       setMessage(`❌ ${err.response?.data?.message || 'Đặt vé thất bại.'}`);
