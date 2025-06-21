@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { App } from 'antd';
 
-import type { IFlight, IFlightSearchParams } from '~/types/app/flight-search.type';
+import type { IFlightSearchParams } from '~/types/app/flight-search.type';
 import flightApi from '~/api/app/flight.api';
+import IFlight from '~/types/app/flight.type';
 
 interface IUseFlightSearchReturn {
   searchResults: IFlight[];
@@ -29,30 +30,38 @@ const useFlightSearch = (): IUseFlightSearchReturn => {
 
     setLoading(true);
     setError(null);
-    
+
     try {
-      console.log('🔍 Searching flights with params:', params);
-
-      // Use your backend API
       const response = await flightApi.searchFlights(params);
-      
-      console.log('Flight Search API Response:', response.data);
 
-      // Your backend returns: { data: { flights: [...], total: number } }
       const searchResults = response.data.data?.flights || [];
-      
-      console.log('Processed search results:', searchResults);
 
       setSearchResults(searchResults);
       setSearchPerformed(true);
-      
+
       if (searchResults.length === 0) {
         message.info('Không tìm thấy chuyến bay nào phù hợp');
       } else {
         message.success(`Tìm thấy ${searchResults.length} chuyến bay`);
       }
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message || err.message || 'Lỗi khi tìm kiếm chuyến bay';
+    } catch (err: unknown) {
+      interface ErrorWithResponse {
+        response?: {
+          data?: {
+            message?: string;
+          };
+        };
+        message?: string;
+      }
+      let errorMessage = 'Lỗi khi tìm kiếm chuyến bay';
+      if (typeof err === 'object' && err !== null) {
+        const typedErr = err as ErrorWithResponse;
+        if (typedErr.response?.data?.message && typeof typedErr.response.data.message === 'string') {
+          errorMessage = typedErr.response.data.message;
+        } else if (typedErr.message && typeof typedErr.message === 'string') {
+          errorMessage = typedErr.message;
+        }
+      }
       setError(errorMessage);
       message.error(errorMessage);
       console.error('Flight search error:', err);

@@ -1,3 +1,3 @@
-import FlightSearchPage from "./FlightSearchPage";
+import FlightSearchPage from './FlightSearchPage';
 
 export { FlightSearchPage as FlightSearchPage };

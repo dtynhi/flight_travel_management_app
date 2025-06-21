@@ -1,3 +1,6 @@
+import IAirport from './airport.type';
+import IFlight from './flight.type';
+
 export interface IFlightSearchParams {
   departureAirport?: string;
   arrivalAirport?: string;
@@ -19,7 +22,3 @@ export interface IFlightResultsTableProps {
   searchPerformed: boolean;
   searchParams: IFlightSearchParams;
 }
-
-// Re-export for convenience
-export type { IAirport } from './airport.type';
-export type { IFlight } from './flight.type';

@@ -1,6 +1,6 @@
 import { SuccessResponse } from '~/types/utils.type';
 import http from '../http';
-import type { IAirport } from '~/types/app/airport.type';
+import IAirport from '~/types/app/airport.type';
 
 const airportApi = {
   // GET /api/v1/airport/
@@ -17,19 +17,17 @@ const airportApi = {
   searchAirports: async (name?: string) => {
     const queryParams = new URLSearchParams();
     if (name) queryParams.append('name', name);
-    
-    return await http.get<SuccessResponse<IAirport[]>>(
-      `/v1/airport/search?${queryParams.toString()}`
-    );
+
+    return await http.get<SuccessResponse<IAirport[]>>(`/v1/airport/search?${queryParams.toString()}`);
   },
 
   // POST /api/v1/airport/ (Protected - Admin only)
-  createAirport: async (airportData: any) => {
+  createAirport: async (airportData: unknown) => {
     return await http.post<SuccessResponse<IAirport>>('/v1/airport/', airportData);
   },
 
   // PUT /api/v1/airport/{airport_id} (Protected - Admin only)
-  updateAirport: async (airportId: number, airportData: any) => {
+  updateAirport: async (airportId: number, airportData: unknown) => {
     return await http.put<SuccessResponse<IAirport>>(`/v1/airport/${airportId}`, airportData);
   },
 
