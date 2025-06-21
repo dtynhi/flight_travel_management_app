@@ -28,7 +28,7 @@ const ListFlights: React.FC = () => {
   const fetchFlights = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/flight/flights');
+      const res = await axios.get('http://localhost:5000/api/v1/flight');
       setFlights(res.data.data);
     } catch (err) {
       message.error('Không thể tải chuyến bay');
@@ -39,7 +39,7 @@ const ListFlights: React.FC = () => {
 
   const deleteFlight = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:5000/api/v1/flight/flights/${id}`);
+      await axios.delete(`http://localhost:5000/api/v1/flight/${id}`);
       message.success('Đã xoá chuyến bay');
       fetchFlights();
     } catch (err) {
@@ -51,71 +51,54 @@ const ListFlights: React.FC = () => {
     {
       title: 'Mã chuyến',
       dataIndex: 'id',
-      key: 'id',
+      key: 'id'
     },
     {
       title: 'Từ',
-      dataIndex: 'from_airport',
-      key: 'from_airport',
+      dataIndex: 'departureAirport',
+      key: 'from_airport'
     },
     {
       title: 'Đến',
-      dataIndex: 'to_airport',
-      key: 'to_airport',
+      dataIndex: 'arrivalAirport',
+      key: 'to_airport'
     },
     {
       title: 'Khởi hành',
-      dataIndex: 'departure_time',
+      dataIndex: 'departureTime',
       key: 'departure_time',
-      render: (time: string) => new Date(time).toLocaleString(),
+      render: (time: string) => new Date(time).toLocaleString()
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (status: string) => (
-        <Tag color={status === 'ACTIVE' ? 'green' : 'red'}>{status}</Tag>
-      ),
+      render: (status: string) => <Tag color={status === 'ACTIVE' ? 'green' : 'red'}>{status}</Tag>
     },
     {
       title: 'Thao tác',
       key: 'action',
-      render: (_: any, record: Flight) => (
+      render: (_: unknown, record: Flight) => (
         <Space>
-          <Button
-            icon={<FiEdit />}
-            type='link'
-            onClick={() => navigate(routers.editFlight.fullPath.replace(':id', record.id.toString()))}
-          >
+          <Button icon={<FiEdit />} type='link' onClick={() => navigate(routers.editFlight.fullPath.replace(':id', record.id.toString()))}>
             Sửa
           </Button>
-          <Popconfirm
-            title='Xác nhận xoá?'
-            onConfirm={() => deleteFlight(record.id)}
-            okText='Xoá'
-            cancelText='Huỷ'
-          >
+          <Popconfirm title='Xác nhận xoá?' onConfirm={() => deleteFlight(record.id)} okText='Xoá' cancelText='Huỷ'>
             <Button icon={<FaRegTrashCan />} type='link' danger>
               Xoá
             </Button>
           </Popconfirm>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   return (
     <div>
       <h3>Danh sách chuyến bay</h3>
-      <Table
-        columns={columns}
-        dataSource={flights}
-        rowKey='id'
-        loading={loading}
-      />
+      <Table columns={columns} dataSource={flights} rowKey='id' loading={loading} />
     </div>
   );
 };
 
 export default ListFlights;
-

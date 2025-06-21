@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {
-  Form,
-  InputNumber,
-  Button,
-  Select,
-  DatePicker,
-  message,
-  Typography,
-  Card,
-  Row,
-  Col
-} from 'antd';
+import { Form, InputNumber, Button, Select, DatePicker, message, Typography, Card, Row, Col } from 'antd';
 import dayjs from 'dayjs';
 import routers from '~/routers/router';
 
@@ -23,11 +12,13 @@ const EditFlight: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [airports, setAirports] = useState<any[]>([]);
 
   useEffect(() => {
     fetchAirports();
     if (id) fetchFlight(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchAirports = async () => {
@@ -41,7 +32,7 @@ const EditFlight: React.FC = () => {
 
   const fetchFlight = async (id: string) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/v1/flight/flights/${id}`);
+      const res = await axios.get(`http://localhost:5000/api/v1/flight/${id}`);
       const data = res.data.data;
       form.setFieldsValue({
         fromAirport: data.from_airport_id,
@@ -49,6 +40,7 @@ const EditFlight: React.FC = () => {
         departureTime: dayjs(data.departure_time),
         flightDuration: data.flight_duration,
         basePrice: data.base_price,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         seatConfig: data.ticket_classes.map((c: any) => ({
           ticket_class_id: c.ticket_class_id,
           total_seats: c.total_seats,
@@ -60,6 +52,7 @@ const EditFlight: React.FC = () => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = async (values: any) => {
     const payload = {
       from_airport: parseInt(values.fromAirport),
@@ -67,6 +60,7 @@ const EditFlight: React.FC = () => {
       departure_time: values.departureTime.format('YYYY-MM-DDTHH:mm:ss'),
       flight_time_minutes: parseInt(values.flightDuration),
       base_price: parseFloat(values.basePrice),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       seat_config: values.seatConfig.map((s: any) => ({
         ticket_class_id: parseInt(s.ticket_class_id),
         total_seats: parseInt(s.total_seats),
@@ -91,14 +85,18 @@ const EditFlight: React.FC = () => {
         <Form.Item name='fromAirport' label='Sân bay đi' rules={[{ required: true }]}>
           <Select placeholder='Chọn sân bay'>
             {airports.map((a) => (
-              <Option key={a.id} value={a.id}>{a.airport_name}</Option>
+              <Option key={a.id} value={a.id}>
+                {a.airport_name}
+              </Option>
             ))}
           </Select>
         </Form.Item>
         <Form.Item name='toAirport' label='Sân bay đến' rules={[{ required: true }]}>
           <Select placeholder='Chọn sân bay'>
             {airports.map((a) => (
-              <Option key={a.id} value={a.id}>{a.airport_name}</Option>
+              <Option key={a.id} value={a.id}>
+                {a.airport_name}
+              </Option>
             ))}
           </Select>
         </Form.Item>
@@ -120,37 +118,26 @@ const EditFlight: React.FC = () => {
                   key={key}
                   size='small'
                   title={`Hạng ghế ${form.getFieldValue(['seatConfig', name, 'ticket_class_id']) || ''}`}
-                  extra={<Button danger onClick={() => remove(name)}>Xoá</Button>}
+                  extra={
+                    <Button danger onClick={() => remove(name)}>
+                      Xoá
+                    </Button>
+                  }
                   style={{ marginBottom: 16 }}
                 >
                   <Row gutter={12}>
                     <Col span={8}>
-                      <Form.Item
-                        {...restField}
-                        label="ID hạng ghế"
-                        name={[name, 'ticket_class_id']}
-                        rules={[{ required: true, message: 'Nhập ID hạng ghế' }]}
-                      >
+                      <Form.Item {...restField} label='ID hạng ghế' name={[name, 'ticket_class_id']} rules={[{ required: true, message: 'Nhập ID hạng ghế' }]}>
                         <InputNumber min={1} style={{ width: '100%' }} />
                       </Form.Item>
                     </Col>
                     <Col span={8}>
-                      <Form.Item
-                        {...restField}
-                        label="Tổng ghế"
-                        name={[name, 'total_seats']}
-                        rules={[{ required: true, message: 'Nhập số ghế' }]}
-                      >
+                      <Form.Item {...restField} label='Tổng ghế' name={[name, 'total_seats']} rules={[{ required: true, message: 'Nhập số ghế' }]}>
                         <InputNumber min={1} style={{ width: '100%' }} />
                       </Form.Item>
                     </Col>
                     <Col span={8}>
-                      <Form.Item
-                        {...restField}
-                        label="Giá vé"
-                        name={[name, 'ticket_price']}
-                        rules={[{ required: true, message: 'Nhập giá vé' }]}
-                      >
+                      <Form.Item {...restField} label='Giá vé' name={[name, 'ticket_price']} rules={[{ required: true, message: 'Nhập giá vé' }]}>
                         <InputNumber min={0} style={{ width: '100%' }} />
                       </Form.Item>
                     </Col>
@@ -177,4 +164,3 @@ const EditFlight: React.FC = () => {
 };
 
 export default EditFlight;
-
