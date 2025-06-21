@@ -52,12 +52,12 @@ function SettingInformation() {
         validateTrigger={['onBlur', 'onSubmit']}
       >
         <Form.Item
-          label='Full Name'
+          label='Họ và tên'
           name={'full_name'}
           rules={[
             {
               required: true,
-              message: 'Please input your full name'
+              message: 'Hãy nhập họ và tên'
             }
           ]}
         >
@@ -69,12 +69,12 @@ function SettingInformation() {
         </Form.Item>
 
         <Form.Item
-          label='Phone Number'
+          label='Số điện thoại'
           name={'phone_number'}
           rules={[
             {
               pattern: /^[0-9+\-\s]*$/,
-              message: 'Please enter a valid phone number'
+              message: 'Hãy nhập số điện thoại hợp lệ'
             }
           ]}
         >
@@ -82,11 +82,11 @@ function SettingInformation() {
         </Form.Item>
 
         <Form.Item
-          label='Identification Number'
+          label='CCCD'
           name={'identification_number'}
           rules={[
             {
-              message: 'Please enter a valid identification number'
+              message: 'Hãy nhập số CCCD hợp lệ'
             }
           ]}
         >
@@ -95,7 +95,7 @@ function SettingInformation() {
 
         <Form.Item>
           <Button loading={isLoading} disabled={isLoading} htmlType='submit' type='primary'>
-            Save
+            Lưu
           </Button>
         </Form.Item>
       </Form>

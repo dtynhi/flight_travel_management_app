@@ -5,6 +5,6 @@ export default interface IUser {
   identification_number: string | null;
   phone_number: string | null;
   permissions: string[];
-  roles: string;
+  role: string;
   status: string;
 }

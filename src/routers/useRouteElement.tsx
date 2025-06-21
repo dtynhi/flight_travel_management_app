@@ -1,38 +1,34 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useRoutes } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
-
+import { Suspense } from 'react';
 
 import routers from './router';
 import FallBack from '~/components/FallBack';
-// Permission
 import { RejectRoute, ProtectedRoute } from './PermissionRoute';
-
 
 // Layout
 import AuthLayout from '~/layout/AuthLayout';
 import MainLayout from '~/layout/MainLayout';
-
 
 // Auth
 import Login from '~/pages/auth/login';
 import Register from '~/pages/auth/register';
 import ResetPassword from '~/pages/auth/reset-password';
 
-
-// Error page
+// Error pages
 import NotFound from '~/pages/error/NotFoundPage';
 import Forbidden from '~/pages/error/ForbiddenPage';
 
-
-// Page
+// App pages
 import Home from '~/pages/home/Home';
-const Settings = lazy(() => import('~/pages/settings/Settings'));
+import ReportYear from '~/pages/report/ReportYear';
+import ReportMonth from '~/pages/report/ReportMonth';
+import Settings from '~/pages/settings';
 import FlightSearchPage from '~/pages/search/FlightSearchPage';
 import AddFlight from '~/pages/flight/AddFlight';
 import FlightList from '~/pages/flight/FlightList';
 import EditFlight from '~/pages/flight/EditFlight';
-
+import Permission from '~/components/Permission/Permission';
 
 export default function useRouteElement() {
   return useRoutes([
@@ -53,9 +49,23 @@ export default function useRouteElement() {
                 </Suspense>
               )
             },
+            {
+              path: routers.report.pathName,
+              element: <Permission.Outlet hasAuthority={['ADMIN', 'EMPLOYEE']} fallback={<Forbidden />} />,
+              children: [
+                {
+                  path: routers.report.monthly.pathName,
+                  element: <ReportMonth />
+                },
+                {
+                  path: routers.report.yearly.pathName,
+                  element: <ReportYear />
+                }
+              ]
+            },
             { path: routers.addFlight.pathName, element: <AddFlight /> },
             { path: routers.flightList.pathName, element: <FlightList /> },
-            { path: routers.editFlight.pathName, element: <EditFlight/> }, // Route edit flight
+            { path: routers.editFlight.pathName, element: <EditFlight /> },
             { path: routers.flightSearch.pathName, element: <FlightSearchPage /> }
           ]
         }
@@ -86,6 +96,3 @@ export default function useRouteElement() {
     { path: routers.error.allError, element: <NotFound /> }
   ]);
 }
-
-
-

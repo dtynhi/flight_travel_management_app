@@ -91,7 +91,7 @@ function Register() {
             name='confirmPassword'
             rules={[
               { required: true, message: 'Please input your confirm password!' },
-              ({ getFieldValue }: unknown) => ({
+              ({ getFieldValue }: { getFieldValue: (field: string) => string }) => ({
                 validator(_: unknown, value: string) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
