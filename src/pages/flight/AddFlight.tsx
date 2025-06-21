@@ -23,52 +23,67 @@ const AddFlight: React.FC = () => {
   }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onFinish = (values: any) => {
-    const basePrice = parseFloat(values.basePrice);
+const onFinish = (values: any) => {
+  const basePrice = Number(values.basePrice);
 
-    if (values.fromAirport === values.toAirport) {
-      message.error('Sân bay đi và đến không được trùng nhau!');
-      return;
-    }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (values.intermediateAirports?.some((stop: any) => stop.id === values.fromAirport || stop.id === values.toAirport)) {
-      message.error('Sân bay trung gian không được trùng sân bay đi/đến!');
-      return;
-    }
+  if (values.fromAirport === values.toAirport) {
+    message.error('Sân bay đi và đến không được trùng nhau!');
+    return;
+  }
 
-    const payload = {
-      from_airport: parseInt(values.fromAirport),
-      to_airport: parseInt(values.toAirport),
-      departure_time: values.departureTime.format('YYYY-MM-DDTHH:mm:ss'),
-      flight_time_minutes: parseInt(values.flightDuration),
-      base_price: basePrice,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      intermediate_airports: (values.intermediateAirports || []).map((stop: any, idx: number) => ({
-        id: parseInt(stop.id),
-        stop_duration: parseInt(stop.stop_duration),
-        stop_order: idx + 1,
-        note: stop.note || ''
-      })),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      seat_config: values.seatConfig.map((s: any) => ({
-        ticket_class_id: parseInt(s.ticket_class_id),
-        total_seats: parseInt(s.total_seats),
-        available_seats: parseInt(s.total_seats),
-        ticket_price: parseFloat(s.ticket_price)
-      }))
-    };
 
-    axios
-      .post('http://localhost:5000/api/v1/flight/create', payload)
-      .then(() => {
-        message.success('Tạo chuyến bay thành công');
-        form.resetFields();
-      })
-      .catch((err) => {
-        message.error(err.response?.data?.message || 'Lỗi tạo chuyến bay, vui lòng thử lại!');
-      });
+  if (
+    values.intermediateAirports?.some(
+      (stop: any) => stop.id === values.fromAirport || stop.id === values.toAirport
+    )
+  ) {
+    message.error('Sân bay trung gian không được trùng sân bay đi/đến!');
+    return;
+  }
+
+
+  const payload = {
+    from_airport: Number(values.fromAirport),
+    to_airport: Number(values.toAirport),
+    departure_time: values.departureTime.format('YYYY-MM-DDTHH:mm:ss'),
+    flight_time_minutes: Number(values.flightDuration),
+    base_price: basePrice,
+    intermediate_airports: (values.intermediateAirports || []).map((stop: any, idx: number) => ({
+      id: Number(stop.id),
+      stop_duration: Number(stop.stop_duration),
+      stop_order: idx + 1,
+      note: stop.note || ''
+    })),
+    seat_config: (values.seatConfig || []).map((s: any) => ({
+      ticket_class_id: Number(s.ticket_class_id),
+      total_seats: Number(s.total_seats),
+      available_seats: Number(s.total_seats), // Nếu cần custom thì chỉnh lại
+      ticket_price: Number(s.ticket_price)
+    }))
   };
+
+
+  console.log('Payload:', payload); // ✅ Debug log
+
+
+  axios
+    .post('http://localhost:5000/api/v1/flight/', payload, {
+      withCredentials: true // ✅ Gửi kèm cookie nếu backend cần
+    })
+    .then(() => {
+      message.success('Tạo chuyến bay thành công');
+      form.resetFields();
+    })
+    .catch((err) => {
+      console.error('API Error:', err.response?.data || err.message);
+      message.error(err.response?.data?.message || 'Lỗi tạo chuyến bay, vui lòng thử lại!');
+    });
+};
+
+
+
+
 
   return (
     <AntdApp>
