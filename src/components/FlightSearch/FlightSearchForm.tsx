@@ -41,57 +41,46 @@ const FlightSearchForm: React.FC<IFlightSearchFormProps> = ({
     <div className="space-y-6">
       {/* Search Form Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            <EnvironmentOutlined className="mr-1 text-blue-500" />
+        {/* Departure Airport */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
             Sân bay khởi hành
           </label>
           <AutoComplete
             className="w-full"
-            placeholder="Nhập tên sân bay khởi hành..."
-            value={searchParams.departureAirport || ''}
-            onChange={(value) => onParamChange('departureAirport', value)}
+            placeholder="Chọn sân bay khởi hành"
+            value={searchParams.departureAirport}
             options={filterAirports(searchParams.departureAirport || '')}
-            filterOption={false}
+            onSearch={(value) => onParamChange('departureAirport', value)}
+            onSelect={(value) => onParamChange('departureAirport', value)}
             allowClear
-            showSearch
-            notFoundContent={
-              <div className="text-center py-2 text-gray-500">
-                Không tìm thấy sân bay
-              </div>
-            }
           />
         </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            <EnvironmentOutlined className="mr-1 text-green-500" />
+
+        {/* Arrival Airport */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
             Sân bay đến
           </label>
           <AutoComplete
             className="w-full"
-            placeholder="Nhập tên sân bay đến..."
-            value={searchParams.arrivalAirport || ''}
-            onChange={(value) => onParamChange('arrivalAirport', value)}
+            placeholder="Chọn sân bay đến"
+            value={searchParams.arrivalAirport}
             options={filterAirports(searchParams.arrivalAirport || '')}
-            filterOption={false}
+            onSearch={(value) => onParamChange('arrivalAirport', value)}
+            onSelect={(value) => onParamChange('arrivalAirport', value)}
             allowClear
-            showSearch
-            notFoundContent={
-              <div className="text-center py-2 text-gray-500">
-                Không tìm thấy sân bay
-              </div>
-            }
           />
         </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            📅 Ngày khởi hành
+
+        {/* Flight Date */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Ngày bay
           </label>
           <DatePicker
-            placeholder="Chọn ngày khởi hành"
-            className="w-full focus:border-purple-400"
+            className="w-full"
+            placeholder="Chọn ngày bay"
             value={searchParams.flightDate ? dayjs(searchParams.flightDate) : null}
             onChange={handleDateChange}
             format="DD/MM/YYYY"
@@ -101,28 +90,25 @@ const FlightSearchForm: React.FC<IFlightSearchFormProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="text-center">
-        <Space size="middle">
-          <Button
-            type="primary"
-            size="large"
-            loading={loading}
-            onClick={onSearch}
-            icon={<SearchOutlined />}
-            className="bg-purple-600 hover:bg-purple-700 border-purple-600"
-          >
-            {loading ? 'Đang tìm kiếm...' : 'Tra cứu'}
-          </Button>
-          
-          <Button
-            size="large"
-            onClick={onReset}
-            icon={<ReloadOutlined />}
-            className="border-gray-300 text-gray-600 hover:border-gray-400"
-          >
-            Đặt lại
-          </Button>
-        </Space>
+      <div className="flex justify-center space-x-4">
+        <Button
+          type="primary"
+          icon={<SearchOutlined />}
+          onClick={onSearch}
+          loading={loading}
+          size="large"
+          className="px-8"
+        >
+          Tìm kiếm
+        </Button>
+        <Button
+          icon={<ReloadOutlined />}
+          onClick={onReset}
+          size="large"
+          className="px-8"
+        >
+          Đặt lại
+        </Button>
       </div>
     </div>
   );
