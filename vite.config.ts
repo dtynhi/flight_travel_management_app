@@ -8,15 +8,22 @@ const buildTimestamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 1
 export default defineConfig({
   plugins: [react({ tsDecorators: true })],
   server: {
-    port: 3001
+    port: 3001,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000', // 🔁 cổng backend Flask
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
+      },
+    },
   },
   css: {
-    devSourcemap: true
+    devSourcemap: true,
   },
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, './src')
-    }
+      '~': path.resolve(__dirname, './src'),
+    },
   },
   build: {
     rollupOptions: {
@@ -26,17 +33,16 @@ export default defineConfig({
             return 'vendor';
           }
         },
-        // Add timestamp to filenames to clear cache with each build
         entryFileNames: `assets/[name].[hash].${buildTimestamp}.js`,
         chunkFileNames: `assets/[name].[hash].${buildTimestamp}.js`,
-        assetFileNames: `assets/[name].[hash].${buildTimestamp}.[ext]`
-      }
+        assetFileNames: `assets/[name].[hash].${buildTimestamp}.[ext]`,
+      },
     },
-    outDir: 'build'
+    outDir: 'build',
   },
   optimizeDeps: {
     esbuildOptions: {
-      plugins: [fixReactVirtualized]
-    }
-  }
+      plugins: [fixReactVirtualized],
+    },
+  },
 });
