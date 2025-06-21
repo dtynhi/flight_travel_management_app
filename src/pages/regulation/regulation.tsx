@@ -1,172 +1,136 @@
-import React, { useEffect } from 'react';
-import { Card, Form, InputNumber, Checkbox, Button, Space, Divider, message } from 'antd';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-// API gọi
-const fetchRegulations = async () => {
-  const { data } = await axios.get('/api/v1/regulations');
-  return data.data; // dữ liệu trong data.data
-};
+interface Regulation {
+  number_of_airports: number;
+  minimum_flight_duration: number;
+  max_intermediate_stops: number;
+  minimum_stop_duration: number;
+  maximum_stop_duration: number;
+  booking_deadline: number;
+}
 
-const updateRegulation = async (regulation: { key: string; value: string }) => {
-  const { data } = await axios.put('/api/v1/regulations', regulation, {
-    headers: { 'Content-Type': 'application/json' }
-  });
-  return data;
-};
-
-const RegulationPage: React.FC = () => {
-  const [form] = Form.useForm();
-  const queryClient = useQueryClient();
-
-  // React Query lấy data
-  const { data, isLoading } = useQuery(['regulations'], fetchRegulations);
-
-  // Mutation cập nhật 1 quy định
-  const mutation = useMutation(updateRegulation, {
-    onSuccess: () => {
-      message.success('Cập nhật quy định thành công');
-      queryClient.invalidateQueries(['regulations']); // làm mới dữ liệu
-    },
-    onError: () => {
-      message.error('Cập nhật quy định thất bại');
-    },
+const RegulationPage = () => {
+  const [formData, setFormData] = useState<Regulation>({
+    number_of_airports: 0,
+    minimum_flight_duration: 0,
+    max_intermediate_stops: 0,
+    minimum_stop_duration: 0,
+    maximum_stop_duration: 0,
+    booking_deadline: 0,
   });
 
-  // Transform dữ liệu từ API về form fields
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transformFromApi = (regs: any[]) => {
-    const QD1 = regs.find(r => r.key === 'QD1')?.value || '';
-    const QD2 = regs.find(r => r.key === 'QD2')?.value || '';
-    const QD3 = regs.find(r => r.key === 'QD3')?.value || '';
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
 
-    let qd1Data = { numberOfAirports: 10, minFlightTime: 30, maxStopoverAirports: 2, minStopoverTime: 10, maxStopoverTime: 20 };
-    let qd2Data = { numberOfTicketClasses: 2, ticketClass1PriceRate: 1.05, ticketClass2PriceRate: 1.0 };
-    let qd3Data = { latestBookingDaysBefore: 1, cancelOnDepartureDay: true };
-
-    try {
-      if (QD1) qd1Data = JSON.parse(QD1);
-      if (QD2) qd2Data = JSON.parse(QD2);
-      if (QD3) qd3Data = JSON.parse(QD3);
-    } catch {
-      message.warning('Dữ liệu quy định không đúng định dạng JSON, dùng giá trị mặc định.');
-    }
-
-    return {
-      ...qd1Data,
-      ...qd2Data,
-      ...qd3Data,
-    };
-  };
-
-  // Transform form values thành mảng quy định (key, value)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transformToApi = (values: any) => {
-    return [
-      {
-        key: 'QD1',
-        value: JSON.stringify({
-          numberOfAirports: values.numberOfAirports,
-          minFlightTime: values.minFlightTime,
-          maxStopoverAirports: values.maxStopoverAirports,
-          minStopoverTime: values.minStopoverTime,
-          maxStopoverTime: values.maxStopoverTime,
-        }),
-      },
-      {
-        key: 'QD2',
-        value: JSON.stringify({
-          numberOfTicketClasses: values.numberOfTicketClasses,
-          ticketClass1PriceRate: values.ticketClass1PriceRate,
-          ticketClass2PriceRate: values.ticketClass2PriceRate,
-        }),
-      },
-      {
-        key: 'QD3',
-        value: JSON.stringify({
-          latestBookingDaysBefore: values.latestBookingDaysBefore,
-          cancelOnDepartureDay: values.cancelOnDepartureDay,
-        }),
-      },
-      {
-        key: 'QD6',
-        value: 'Người dùng có thể thay đổi các quy định QD1, QD2, QD3 theo yêu cầu.',
-      }
-    ];
-  };
-
-  // Khi data load xong, set lên form
   useEffect(() => {
-    if (data) {
-      const formData = transformFromApi(data);
-      form.setFieldsValue(formData);
-    }
-  }, [data, form]);
+    axios.get('/api/v1/regulations')
+      .then((res) => {
+        setFormData(res.data);
+      })
+      .catch(() => {
+        setMessage('Không thể tải dữ liệu quy định hệ thống.');
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
-  // Xử lý submit: gọi mutation cho từng quy định
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onFinish = async (values: any) => {
-    const regsToUpdate = transformToApi(values);
-    try {
-      await Promise.all(regsToUpdate.map(reg => mutation.mutateAsync(reg)));
-    } catch {
-      // lỗi đã được báo trong onError mutation
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (!isNaN(Number(value))) {
+      setFormData((prev) => ({ ...prev, [name]: Number(value) }));
     }
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    axios.put('/api/v1/regulations', formData)
+      .then(() => {
+        setMessage('✅ Cập nhật quy định thành công!');
+      })
+      .catch(() => {
+        setMessage('❌ Cập nhật thất bại. Vui lòng thử lại.');
+      });
+  };
+
+  if (loading) return <div className="p-4 text-center">Đang tải dữ liệu...</div>;
 
   return (
-    <Card title="Quản lý Quy Định" loading={isLoading}>
-      <Form form={form} layout="vertical" onFinish={onFinish}>
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded shadow">
+      <h1 className="text-2xl font-bold mb-4">Quản lý Quy định Hệ thống</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
 
-        <Divider>QĐ1: Số sân bay, thời gian bay, sân bay trung gian</Divider>
-        <Form.Item name="numberOfAirports" label="Số lượng sân bay" rules={[{ required: true }]}>
-          <InputNumber min={1} />
-        </Form.Item>
-        <Form.Item name="minFlightTime" label="Thời gian bay tối thiểu (phút)" rules={[{ required: true }]}>
-          <InputNumber min={1} />
-        </Form.Item>
-        <Form.Item name="maxStopoverAirports" label="Số sân bay trung gian tối đa" rules={[{ required: true }]}>
-          <InputNumber min={0} />
-        </Form.Item>
-        <Form.Item name="minStopoverTime" label="Thời gian dừng tối thiểu tại sân bay trung gian (phút)" rules={[{ required: true }]}>
-          <InputNumber min={0} />
-        </Form.Item>
-        <Form.Item name="maxStopoverTime" label="Thời gian dừng tối đa tại sân bay trung gian (phút)" rules={[{ required: true }]}>
-          <InputNumber min={0} />
-        </Form.Item>
+        <FormItem
+          label="Số lượng sân bay (QĐ1)"
+          name="number_of_airports"
+          value={formData.number_of_airports}
+          onChange={handleChange}
+        />
 
-        <Divider>QĐ2: Vé và giá vé</Divider>
-        <Form.Item name="numberOfTicketClasses" label="Số lượng hạng vé" rules={[{ required: true }]}>
-          <InputNumber min={1} />
-        </Form.Item>
-        <Form.Item name="ticketClass1PriceRate" label="Tỉ lệ giá vé hạng 1 (ví dụ 1.05 = 105%)" rules={[{ required: true}]}>
-          <InputNumber min={0} step={0.01} />
-        </Form.Item>
-        <Form.Item name="ticketClass2PriceRate" label="Tỉ lệ giá vé hạng 2 (ví dụ 1 = 100%)" rules={[{ required: true}]}>
-          <InputNumber min={0} step={0.01} />
-        </Form.Item>
+        <FormItem
+          label="Thời gian bay tối thiểu (phút) (QĐ1)"
+          name="minimum_flight_duration"
+          value={formData.minimum_flight_duration}
+          onChange={handleChange}
+        />
 
-        <Divider>QĐ3: Đặt vé và hủy vé</Divider>
-        <Form.Item name="latestBookingDaysBefore" label="Số ngày chậm nhất khi đặt vé" rules={[{ required: true}]}>
-          <InputNumber min={0} />
-        </Form.Item>
-        <Form.Item name="cancelOnDepartureDay" valuePropName="checked">
-          <Checkbox>Hủy tất cả phiếu đặt vào ngày khởi hành</Checkbox>
-        </Form.Item>
+        <FormItem
+          label="Số sân bay trung gian tối đa (QĐ1)"
+          name="max_intermediate_stops"
+          value={formData.max_intermediate_stops}
+          onChange={handleChange}
+        />
 
-        <Divider>QĐ6: Quyền thay đổi quy định</Divider>
-        <p>Người dùng có thể thay đổi các quy định QĐ1, QĐ2, QĐ3 như trên.</p>
+        <FormItem
+          label="Thời gian dừng tối thiểu (phút) (QĐ1)"
+          name="minimum_stop_duration"
+          value={formData.minimum_stop_duration}
+          onChange={handleChange}
+        />
 
-        <Form.Item>
-          <Space>
-            <Button type="primary" htmlType="submit" loading={mutation.isLoading}>Lưu thay đổi</Button>
-            <Button onClick={() => form.resetFields()}>Hủy</Button>
-          </Space>
-        </Form.Item>
-      </Form>
-    </Card>
+        <FormItem
+          label="Thời gian dừng tối đa (phút) (QĐ1)"
+          name="maximum_stop_duration"
+          value={formData.maximum_stop_duration}
+          onChange={handleChange}
+        />
+
+        <FormItem
+          label="Thời gian đặt vé trễ nhất (giờ trước khi bay)"
+          name="booking_deadline"
+          value={formData.booking_deadline}
+          onChange={handleChange}
+        />
+
+        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Lưu thay đổi
+        </button>
+
+        {message && <p className="mt-3 text-green-600">{message}</p>}
+      </form>
+    </div>
   );
 };
+
+interface FormItemProps {
+  label: string;
+  name: string;
+  value: number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const FormItem: React.FC<FormItemProps> = ({ label, name, value, onChange }) => (
+  <div>
+    <label htmlFor={name} className="block mb-1 font-semibold">{label}</label>
+    <input
+      type="number"
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="w-full px-3 py-2 border rounded"
+      inputMode="numeric"
+      min={0}
+    />
+  </div>
+);
 
 export default RegulationPage;
