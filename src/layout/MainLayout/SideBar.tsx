@@ -37,11 +37,6 @@ function SideBar() {
   const menuItems: ISideBarItems[] = useMemo(() => {
     const items: ISideBarItems[] = [
       {
-        key: routers.home.fullPath,
-        icon: <AppIcon.Home size={18} />,
-        label: 'Trang chủ'
-      },
-      {
         key: routers.flightSearch.fullPath,
         icon: <AppIcon.Listing size={18} />,
         label: 'Tra cứu chuyến bay'
@@ -51,7 +46,7 @@ function SideBar() {
         icon: <AppIcon.Plane size={18} />,
         label: 'Booking'
       },
-    
+
       {
         key: routers.addFlight.fullPath,
         icon: <AppIcon.Plus size={18} />,
