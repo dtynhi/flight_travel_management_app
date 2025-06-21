@@ -26,8 +26,6 @@ import ReportMonth from '~/pages/report/ReportMonth';
 import Settings from '~/pages/settings';
 import FlightSearchPage from '~/pages/search/FlightSearchPage';
 import AddFlight from '~/pages/flight/AddFlight';
-import FlightList from '~/pages/flight/FlightList';
-import EditFlight from '~/pages/flight/EditFlight';
 import Permission from '~/components/Permission/Permission';
 import Booking from '~/pages/booking/booking';
 
@@ -65,8 +63,6 @@ export default function useRouteElement() {
               ]
             },
             { path: routers.addFlight.pathName, element: <AddFlight /> },
-            { path: routers.flightList.pathName, element: <FlightList /> },
-            { path: routers.editFlight.pathName, element: <EditFlight /> },
             { path: routers.flightSearch.pathName, element: <FlightSearchPage /> },
             {
               path: routers.booking.pathName,
