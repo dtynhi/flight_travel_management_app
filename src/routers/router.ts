@@ -76,6 +76,10 @@ const routers = {
     pathName: 'airport',
     fullPath: '/airport'
   },
+  ticket: {
+    pathName: 'my-ticket',
+    fullPath: '/my-ticket'
+  },
   employee: {
     pathName: 'employee',
     fullPath: '/employee'
@@ -83,3 +87,4 @@ const routers = {
 } as const;
 
 export default routers;
+

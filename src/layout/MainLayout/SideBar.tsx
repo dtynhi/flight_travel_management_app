@@ -26,7 +26,6 @@ function SideBar() {
   const navigate = useNavigate();
   const { profile } = useContext(AppContext);
 
-  // Update active key when pathname changes
   useEffect(() => {
     if (pathname) {
       setActiveKey(pathname);
@@ -41,10 +40,10 @@ function SideBar() {
         label: 'Tra cứu chuyến bay'
       },
       {
-        key: routers.booking.fullPath,
+        key: '/my-tickets',
         icon: <AppIcon.Plane size={18} />,
-        label: 'Đặt vé máy bay',
-        authorities: ['USER']
+        label: 'Vé của tôi',
+        authorities: ['USER', 'ADMIN']
       },
       {
         key: routers.airport.fullPath,
@@ -55,8 +54,8 @@ function SideBar() {
       {
         key: routers.addFlight.fullPath,
         icon: <AppIcon.Plus size={18} />,
-        authorities: ['ADMIN', 'EMPLOYEE'],
-        label: 'Thêm chuyến bay'
+        label: 'Thêm chuyến bay',
+        authorities: ['ADMIN', 'EMPLOYEE']
       },
       {
         key: 'report',
@@ -94,16 +93,12 @@ function SideBar() {
         label: 'Cài đặt',
         icon: <AppIcon.Setting size={18} />
       }
-    ] as ISideBarItems[];
+    ];
 
-    // Filter items based on user roles
     return items.filter((item) => {
-      if (!item?.authorities?.length) {
-        return true;
-      }
-
+      if (!item?.authorities?.length) return true;
       const userRoles = Array.isArray(profile?.role) ? profile.role : [profile?.role];
-      return item.authorities.some((authority) => userRoles.includes(authority));
+      return item.authorities.some((role) => userRoles.includes(role));
     });
   }, [profile?.role]);
 
@@ -128,3 +123,5 @@ function SideBar() {
 }
 
 export default SideBar;
+
+
