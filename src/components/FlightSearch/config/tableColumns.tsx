@@ -34,7 +34,7 @@ export const createFlightTableColumns = ({ seatDataLoading }: ICreateColumnsProp
       case 'cancelled':
         return { color: 'red', label: 'Đã hủy' };
       case 'scheduled':
-        return { color: 'blue', label: 'Đã bay' };
+        return { color: 'blue', label: 'Hoàn thành' };
       default:
         return { color: 'default', label: status || 'N/A' };
     }
