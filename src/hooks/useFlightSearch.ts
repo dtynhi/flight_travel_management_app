@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { App } from 'antd';
 
 import type { IFlightSearchParams } from '~/types/app/flight-search.type';
@@ -36,19 +36,19 @@ const useFlightSearch = (): IUseFlightSearchReturn => {
     setLoading(true);
     setError(null);
     setHasInitialized(true);
-    
+
     try {
       console.log('Loading all flights...');
       const response = await flightApi.getAllFlights();
       console.log('API Response:', response);
-      
+
       const flights = response.data.data || [];
       console.log('Extracted flights:', flights);
-      
+
       setAllFlights(flights);
       setSearchResults(flights);
       setSearchPerformed(true);
-      
+
       if (flights.length === 0) {
         console.log('No flights found in response');
         message.info('Chưa có chuyến bay nào trong hệ thống');
@@ -58,7 +58,7 @@ const useFlightSearch = (): IUseFlightSearchReturn => {
     } catch (err: unknown) {
       console.error('Load flights error:', err);
       setHasInitialized(false); // Reset on error so it can be retried
-      
+
       interface ErrorWithResponse {
         response?: {
           data?: {
@@ -85,37 +85,37 @@ const useFlightSearch = (): IUseFlightSearchReturn => {
     }
   }, [loading, hasInitialized, message]);
 
-  const searchFlights = useCallback(async (params: IFlightSearchParams) => {
-    // If no search criteria, show all flights
-    if (!params.departureAirport && !params.arrivalAirport && !params.flightDate) {
-      setSearchResults(allFlights);
+  const searchFlights = useCallback(
+    async (params: IFlightSearchParams) => {
+      // If no search criteria, show all flights
+      if (!params.departureAirport && !params.arrivalAirport && !params.flightDate) {
+        setSearchResults(allFlights);
+        setSearchPerformed(true);
+        return;
+      }
+
+      // Filter flights based on search criteria
+      const filteredFlights = allFlights.filter((flight) => {
+        const matchesDeparture = !params.departureAirport || flight.departureAirport?.toLowerCase().includes(params.departureAirport.toLowerCase());
+
+        const matchesArrival = !params.arrivalAirport || flight.arrivalAirport?.toLowerCase().includes(params.arrivalAirport.toLowerCase());
+
+        const matchesDate = !params.flightDate || flight.departureTime?.startsWith(params.flightDate);
+
+        return matchesDeparture && matchesArrival && matchesDate;
+      });
+
+      setSearchResults(filteredFlights);
       setSearchPerformed(true);
-      return;
-    }
 
-    // Filter flights based on search criteria
-    const filteredFlights = allFlights.filter(flight => {
-      const matchesDeparture = !params.departureAirport || 
-        flight.departureAirport?.toLowerCase().includes(params.departureAirport.toLowerCase());
-      
-      const matchesArrival = !params.arrivalAirport || 
-        flight.arrivalAirport?.toLowerCase().includes(params.arrivalAirport.toLowerCase());
-      
-      const matchesDate = !params.flightDate || 
-        flight.departureTime?.startsWith(params.flightDate);
-      
-      return matchesDeparture && matchesArrival && matchesDate;
-    });
-
-    setSearchResults(filteredFlights);
-    setSearchPerformed(true);
-
-    if (filteredFlights.length === 0) {
-      message.info('Không tìm thấy chuyến bay nào phù hợp với tiêu chí tìm kiếm');
-    } else {
-      message.success(`Tìm thấy ${filteredFlights.length} chuyến bay`);
-    }
-  }, [allFlights, message]);
+      if (filteredFlights.length === 0) {
+        message.info('Không tìm thấy chuyến bay nào phù hợp với tiêu chí tìm kiếm');
+      } else {
+        message.success(`Tìm thấy ${filteredFlights.length} chuyến bay`);
+      }
+    },
+    [allFlights, message]
+  );
 
   const clearResults = useCallback(() => {
     setSearchResults(allFlights);

@@ -20,7 +20,6 @@ import NotFound from '~/pages/error/NotFoundPage';
 import Forbidden from '~/pages/error/ForbiddenPage';
 
 // App pages
-import Home from '~/pages/home/Home';
 import ReportYear from '~/pages/report/ReportYear';
 import ReportMonth from '~/pages/report/ReportMonth';
 import Settings from '~/pages/settings';
@@ -33,6 +32,7 @@ import FlightDetailPage from '~/pages/search/FlightDetailPage';
 //regulation
 import RegulationPage from '~/pages/regulation/regulation';
 import { AirportPage } from '~/pages/airport';
+import EmployeePage from '~/pages/employee';
 
 export default function useRouteElement() {
   return useRoutes([
@@ -44,7 +44,6 @@ export default function useRouteElement() {
           path: '',
           element: <MainLayout />,
           children: [
-            { path: routers.home.pathName, element: <Home /> },
             {
               path: routers.settings.pathName,
               element: (
@@ -87,6 +86,10 @@ export default function useRouteElement() {
             {
               path: routers.airport.pathName,
               element: <AirportPage />
+            },
+            {
+              path: routers.employee.pathName,
+              element: <EmployeePage />
             }
           ]
         }

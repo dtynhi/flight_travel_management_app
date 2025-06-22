@@ -7,9 +7,6 @@ import routers from '~/routers/router';
 import AppIcon from '~/components/Icon/AppIcon';
 import { AppContext } from '~/context/app.context';
 import { ItemType, MenuItemType } from 'antd/es/menu/interface';
-
-import { FileTextOutlined } from '@ant-design/icons'; // icon mặc định từ antd
-
 const siderStyle: React.CSSProperties = {
   color: '#fff',
   height: '100vh',
@@ -78,9 +75,15 @@ function SideBar() {
       },
       {
         key: routers.regulation.fullPath,
-        icon: <FileTextOutlined />,
+        icon: <AppIcon.Policy size={18} />,
         label: 'Quy định',
         authorities: ['ADMIN', 'EMPLOYEE']
+      },
+      {
+        key: routers.employee.fullPath,
+        icon: <AppIcon.Employee size={18} />,
+        label: 'Nhân viên',
+        authorities: ['ADMIN']
       },
       {
         type: 'divider'

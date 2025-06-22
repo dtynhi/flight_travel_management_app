@@ -9,7 +9,7 @@ import localStorageService from '~/service/local-storage.service';
 
 export function RejectRoute() {
   const { isAuthenticated } = useAppContext();
-  return isAuthenticated ? <Navigate to={routers.home.fullPath} /> : <Outlet />;
+  return isAuthenticated ? <Navigate to={routers.flightSearch.fullPath} /> : <Outlet />;
 }
 
 export function ProtectedRoute() {

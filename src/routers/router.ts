@@ -1,8 +1,4 @@
 const routers = {
-  home: {
-    pathName: '',
-    fullPath: '/'
-  },
   auth: {
     pathName: 'auth',
     login: {
@@ -80,6 +76,10 @@ const routers = {
     pathName: 'airport',
     fullPath: '/airport'
   },
+  employee: {
+    pathName: 'employee',
+    fullPath: '/employee'
+  }
 } as const;
 
 export default routers;

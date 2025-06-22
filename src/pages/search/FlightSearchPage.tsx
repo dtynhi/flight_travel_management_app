@@ -10,14 +10,7 @@ const FlightSearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useState<IFlightSearchParams>({});
 
   const { airports } = useAirport();
-  const { 
-    searchResults: flights, 
-    loading, 
-    searchPerformed, 
-    searchFlights, 
-    clearResults, 
-    loadAllFlights 
-  } = useFlightSearch();
+  const { searchResults: flights, loading, searchPerformed, searchFlights, clearResults, loadAllFlights } = useFlightSearch();
 
   // Load all flights when component mounts - only once
   useEffect(() => {
@@ -59,12 +52,7 @@ const FlightSearchPage: React.FC = () => {
 
       {/* Results Table */}
       <Card className='shadow-sm'>
-        <FlightResultsTable 
-          flights={flights} 
-          loading={loading} 
-          searchPerformed={searchPerformed} 
-          searchParams={searchParams} 
-        />
+        <FlightResultsTable flights={flights} loading={loading} searchPerformed={searchPerformed} searchParams={searchParams} />
       </Card>
     </div>
   );
