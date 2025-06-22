@@ -27,9 +27,9 @@ class LocalStorageService {
   getRedirectUrlFromLS() {
     const redirectUrl = localStorage.getItem('redirectUrl') || '/';
     if (redirectUrl === 'undefined' || redirectUrl === 'null' || redirectUrl === 'false') {
-      return '/';
+      return '/flight-search';
     }
-    return redirectUrl.startsWith('/auth') ? '/' : redirectUrl;
+    return redirectUrl.startsWith('/auth') ? '/flight-search' : redirectUrl;
   }
 }
 

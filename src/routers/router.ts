@@ -75,6 +75,10 @@ const routers = {
   regulation: {
     pathName: 'regulations',
     fullPath: '/regulations'
+  },
+  airport: {
+    pathName: 'airport',
+    fullPath: '/airport'
   }
 } as const;
 
