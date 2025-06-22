@@ -5,7 +5,7 @@ import IAirport from '~/types/app/airport.type';
 const airportApi = {
   // GET /api/v1/airport/
   getAllAirports: async () => {
-    return await http.get<SuccessResponse<IAirport[]>>('/v1/airport/');
+    return await http.get<SuccessResponse<IAirport[]>>('/v1/airport');
   },
 
   // GET /api/v1/airport/{airport_id}

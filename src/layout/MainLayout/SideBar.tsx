@@ -48,7 +48,12 @@ function SideBar() {
         icon: <AppIcon.Plane size={18} />,
         label: 'Đặt vé máy bay'
       },
-
+      {
+        key: routers.airport.fullPath,
+        icon: <AppIcon.Airport size={18} />,
+        label: 'Sân bay',
+        authorities: ['ADMIN', 'EMPLOYEE']
+      },
       {
         key: routers.addFlight.fullPath,
         icon: <AppIcon.Plus size={18} />,

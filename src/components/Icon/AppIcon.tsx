@@ -21,6 +21,7 @@ import { GoOrganization, GoLinkExternal } from 'react-icons/go';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import { PiCreditCard } from 'react-icons/pi';
+import { TbBuildingAirport } from 'react-icons/tb';
 
 function AppIcon() {
   return <span>You have not select App Icon</span>;
@@ -65,5 +66,6 @@ AppIcon.Warning = CiWarning;
 AppIcon.Alert = FiAlertCircle;
 AppIcon.CheckCircle = CiCircleCheck;
 AppIcon.Analytic = MdOutlineAnalytics;
+AppIcon.Airport = TbBuildingAirport;
 
 export default AppIcon;

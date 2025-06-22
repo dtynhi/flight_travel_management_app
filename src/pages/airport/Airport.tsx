@@ -4,7 +4,7 @@ import airportApi from '~/api/app/airport.api';
 function AirportPage() {
   const fetchAirport = useQuery({
     queryKey: ['airport'],
-    queryFn: airportApi.getAllAirports()
+    queryFn: () => airportApi.getAllAirports()
   });
 
   console.log(fetchAirport);
