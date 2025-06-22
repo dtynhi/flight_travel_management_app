@@ -14,59 +14,23 @@ function TableActionButton(props: ITableActionButtonProps) {
     type: 'text',
     ...props
   };
-  if (props.hidden === true) {
-    return null;
-  }
-  if (props.show === false) {
-    return null;
-  }
+  if (props.hidden === true) return null;
+  if (props.show === false) return null;
   return <Button {...mergerProps}></Button>;
 }
 
 TableActionButton.Delete = function (props: ITableActionButtonProps) {
   return (
-    <TableActionButton {...omit(props, ['icon, children'])} icon={<AppIcon.Delete />}>
-      {props.children || 'Delete'}
+    <TableActionButton {...omit(props, ['icon', 'children'])} icon={<AppIcon.Delete />}>
+      {'Xóa'}
     </TableActionButton>
   );
 };
 
 TableActionButton.Edit = function (props: ITableActionButtonProps) {
   return (
-    <TableActionButton {...omit(props, ['icon, children'])} icon={<AppIcon.Edit />}>
-      {props.children || 'Edit'}
-    </TableActionButton>
-  );
-};
-
-TableActionButton.Sync = function (props: ITableActionButtonProps) {
-  return (
-    <TableActionButton {...omit(props, ['icon, children'])} icon={<AppIcon.Sync />}>
-      {props.children || 'Sync'}
-    </TableActionButton>
-  );
-};
-
-TableActionButton.Clone = function (props: ITableActionButtonProps) {
-  return (
-    <TableActionButton {...omit(props, ['icon, children'])} icon={<AppIcon.Clone />}>
-      {props.children || 'Clone'}
-    </TableActionButton>
-  );
-};
-
-TableActionButton.Download = function (props: ITableActionButtonProps) {
-  return (
-    <TableActionButton {...omit(props, ['icon, children'])} icon={<AppIcon.Download />}>
-      {props.children || 'Download'}
-    </TableActionButton>
-  );
-};
-
-TableActionButton.Share = function (props: ITableActionButtonProps) {
-  return (
-    <TableActionButton {...omit(props, ['icon, children'])} icon={<AppIcon.Share />}>
-      {props.children || 'Share'}
+    <TableActionButton {...omit(props, ['icon', 'children'])} icon={<AppIcon.Edit />}>
+      {'Chỉnh sửa'}
     </TableActionButton>
   );
 };

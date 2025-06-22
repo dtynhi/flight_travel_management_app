@@ -25,7 +25,7 @@ function Register() {
       return authApi.register(data);
     },
     onSuccess: () => {
-      navigate(routers.home.fullPath);
+      navigate(routers.flightSearch.fullPath);
     },
     onError: (error) => {
       const { message } = errorHandler.handleApiError(error);

@@ -19,12 +19,12 @@ const FlightSearchSummary: React.FC<IFlightSearchSummaryProps> = ({
   return (
     <div className="flex justify-between items-center">
       <h2 className="text-lg font-semibold text-gray-800">
-        Kết quả tìm kiếm: {totalFlights} chuyến bay
+        {hasSearchCriteria ? `Kết quả tìm kiếm: ${totalFlights} chuyến bay` : `Tất cả chuyến bay: ${totalFlights} chuyến bay`}
       </h2>
       
       {hasSearchCriteria && (
         <div className="text-sm text-gray-600">
-          Tìm kiếm: 
+          Lọc theo: 
           {searchParams.departureAirport && ` Từ: ${searchParams.departureAirport}`}
           {searchParams.arrivalAirport && ` Đến: ${searchParams.arrivalAirport}`}
           {searchParams.flightDate && ` Ngày: ${dayjs(searchParams.flightDate).format('DD/MM/YYYY')}`}

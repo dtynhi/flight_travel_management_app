@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 import type { IFlightResultsTableProps } from '~/types/app/flight-search.type';
 import useFlightSeats from '~/hooks/useFlightSeats';
@@ -13,9 +14,14 @@ const FlightResultsTable: React.FC<IFlightResultsTableProps> = ({
   searchPerformed,
   searchParams
 }) => {
+  const navigate = useNavigate();
   const { flightsWithSeats, seatDataLoading } = useFlightSeats(flights);
   
   const columns = createFlightTableColumns({ seatDataLoading });
+
+  const handleRowClick = (record: any) => {
+    window.open(`/flight/${record.id}`, '_blank');
+  };
 
   if (!searchPerformed) {
     return null;
@@ -33,6 +39,11 @@ const FlightResultsTable: React.FC<IFlightResultsTableProps> = ({
         dataSource={flightsWithSeats}
         loading={loading || seatDataLoading}
         rowKey={(record) => record.id}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record),
+          style: { cursor: 'pointer' },
+          className: 'hover:bg-blue-50'
+        })}
         pagination={{
           pageSize: 10,
           showSizeChanger: true,

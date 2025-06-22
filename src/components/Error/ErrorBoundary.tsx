@@ -59,7 +59,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             <Button
               type='default'
               onClick={() => {
-                this.clearErrorsAndNavigate(routers.home.fullPath);
+                this.clearErrorsAndNavigate(routers.flightSearch.fullPath);
               }}
             >
               Back home

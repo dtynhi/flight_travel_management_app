@@ -26,6 +26,20 @@ export const createFlightTableColumns = ({ seatDataLoading }: ICreateColumnsProp
     }
   };
 
+  // Helper function to get status color and label
+  const getStatusConfig = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case 'active':
+        return { color: 'green', label: 'Hoạt động' };
+      case 'cancelled':
+        return { color: 'red', label: 'Đã hủy' };
+      case 'scheduled':
+        return { color: 'blue', label: 'Hoàn thành' };
+      default:
+        return { color: 'default', label: status || 'N/A' };
+    }
+  };
+
   return [
     {
       title: 'ID',
@@ -37,18 +51,6 @@ export const createFlightTableColumns = ({ seatDataLoading }: ICreateColumnsProp
         <span className="text-sm font-medium">{id || 'N/A'}</span>
       )
     },
-    // {
-    //   title: 'Mã CB',
-    //   dataIndex: 'flightCode',
-    //   key: 'flightCode',
-    //   width: 100,
-    //   align: 'center',
-    //   render: (flightCode: string) => (
-    //     <Tag color="blue" className="font-medium text-xs">
-    //       {flightCode || 'N/A'}
-    //     </Tag>
-    //   )
-    // },
     {
       title: 'Sân bay đi',
       dataIndex: 'departureAirport',
@@ -93,6 +95,15 @@ export const createFlightTableColumns = ({ seatDataLoading }: ICreateColumnsProp
       )
     },
     {
+      title: 'Đến',
+      dataIndex: 'arrivalTime',
+      key: 'arrivalTime',
+      width: 120,
+      render: (time: string) => (
+        <span className="text-sm">{formatDateTime(time)}</span>
+      )
+    },
+    {
       title: 'T.gian bay',
       dataIndex: 'flightDuration',
       key: 'flightDuration',
@@ -101,6 +112,21 @@ export const createFlightTableColumns = ({ seatDataLoading }: ICreateColumnsProp
       render: (duration: string) => (
         <span className="text-sm">{duration || 'N/A'}</span>
       )
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      width: 100,
+      align: 'center',
+      render: (status: string) => {
+        const { color, label } = getStatusConfig(status);
+        return (
+          <Tag color={color} className="text-xs font-medium">
+            {label}
+          </Tag>
+        );
+      }
     },
     {
       title: 'Ghế trống',

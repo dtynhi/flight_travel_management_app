@@ -19,7 +19,7 @@ function MainHeader() {
   return (
     <Header style={headerStyle}>
       <div className='flex justify-between items-center'>
-        <Link to={routers.home.fullPath}>
+        <Link to={routers.flightSearch.fullPath}>
           <div className='flex items-center'>
             <Image preview={false} width={40} src={images.logo} />
             <span className='ms-2 font-semibold uppercase'>Flight Travel</span>

@@ -12,7 +12,23 @@ export default interface IFlight {
   status: string;
   createdAt: string;
   updatedAt: string;
-  ticketClasses?: IFlightTicketClass[]; // For seat calculation
+  // Basic ticket class info from flight API
+  ticket_classes?: IBasicTicketClass[];
+  // Intermediate airports from flight API
+  intermediate_airports?: IIntermediateAirport[];
+}
+
+// Basic ticket class structure from flight API
+export interface IBasicTicketClass {
+  class_name: string;
+  total_seats: number;
+}
+
+// Intermediate airport structure from flight API
+export interface IIntermediateAirport {
+  airport_name: string;
+  note: string;
+  stop_duration: number;
 }
 
 export interface IFlightTicketClass {

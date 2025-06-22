@@ -20,7 +20,6 @@ import NotFound from '~/pages/error/NotFoundPage';
 import Forbidden from '~/pages/error/ForbiddenPage';
 
 // App pages
-import Home from '~/pages/home/Home';
 import ReportYear from '~/pages/report/ReportYear';
 import ReportMonth from '~/pages/report/ReportMonth';
 import Settings from '~/pages/settings';
@@ -28,10 +27,12 @@ import FlightSearchPage from '~/pages/search/FlightSearchPage';
 import AddFlight from '~/pages/flight/AddFlight';
 import Permission from '~/components/Permission/Permission';
 import FlightDetailPage from '~/pages/search/FlightSearchPage';
+import Booking from '~/pages/booking/booking';
 
 // Regulation
 import RegulationPage from '~/pages/regulation/regulation';
 import { AirportPage } from '~/pages/airport';
+import EmployeePage from '~/pages/employee';
 
 // My Tickets
 import MyTicketsPage from '~/pages/ticket/MyTicketsPage';
@@ -46,7 +47,6 @@ export default function useRouteElement() {
           path: '',
           element: <MainLayout />,
           children: [
-            { path: routers.home.pathName, element: <Home /> },
             {
               path: routers.settings.pathName,
               element: (
@@ -83,6 +83,10 @@ export default function useRouteElement() {
               element: <FlightDetailPage />
             },
             {
+              path: '/flight/:flightId',
+              element: <FlightDetailPage />
+            },
+            {
               path: routers.regulation.pathName,
               element: <RegulationPage />
             },
@@ -93,6 +97,10 @@ export default function useRouteElement() {
             {
               path: '/my-tickets',
               element: <MyTicketsPage />
+            },
+            {
+              path: routers.employee.pathName,
+              element: <EmployeePage />
             }
           ]
         }

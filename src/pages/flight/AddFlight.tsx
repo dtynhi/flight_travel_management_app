@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-  Card,
   Form,
   Input,
   Select,
@@ -12,13 +11,10 @@ import {
   Divider,
   Row,
   Col,
-  Typography,
   message,
-  App as AntdApp
 } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
-const { Title } = Typography;
 const { Option } = Select;
 
 const AddFlight: React.FC = () => {
@@ -86,89 +82,141 @@ const AddFlight: React.FC = () => {
   };
 
   return (
-    <AntdApp>
-      <Row justify='center' style={{ marginTop: 32 }}>
-        <Col xs={24} sm={20} md={16} lg={12}>
-          <Card style={{ boxShadow: '0 8px 32px rgba(60, 60, 130, 0.08)', borderRadius: 16 }}>
-            <Title level={3} style={{ textAlign: 'center' }}>
-              Thêm chuyến bay
-            </Title>
-            <Divider />
-            <Form form={form} layout='vertical' onFinish={onFinish}>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    name='fromAirport'
-                    label='Sân bay đi'
-                    rules={[{ required: true, message: 'Vui lòng chọn sân bay đi' }]}
-                  >
-                    <Select placeholder='Chọn sân bay'>
-                      {airports.map((a) => (
-                        <Option key={a.id} value={a.id}>
-                          {a.airport_name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name='toAirport'
-                    label='Sân bay đến'
-                    rules={[{ required: true, message: 'Vui lòng chọn sân bay đến' }]}
-                  >
-                    <Select placeholder='Chọn sân bay'>
-                      {airports.map((a) => (
-                        <Option key={a.id} value={a.id}>
-                          {a.airport_name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
+    <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-center mb-8">
+        THÊM CHUYẾN BAY
+      </h1>
+      
+      <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-2xl">
+        <Form form={form} layout='vertical' onFinish={onFinish} className="space-y-6">
+          {/* Thông tin cơ bản */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700">Sân bay đi</label>
+              <Form.Item
+                name='fromAirport'
+                rules={[{ required: true, message: 'Vui lòng chọn sân bay đi' }]}
+                className="mb-0"
+              >
+                <Select 
+                  placeholder='Chọn sân bay' 
+                  className="w-full"
+                  size="large"
+                >
+                  {airports.map((a) => (
+                    <Option key={a.id} value={a.id}>
+                      {a.airport_name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
 
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    name='departureTime'
-                    label='Ngày giờ khởi hành'
-                    rules={[{ required: true, message: 'Vui lòng chọn ngày giờ khởi hành' }]}
-                  >
-                    <DatePicker showTime format='YYYY-MM-DD HH:mm' style={{ width: '100%' }} />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name='flightDuration'
-                    label='Thời gian bay (phút)'
-                    rules={[{ required: true, message: 'Vui lòng nhập thời gian bay' }]}
-                  >
-                    <InputNumber min={1} style={{ width: '100%' }} />
-                  </Form.Item>
-                </Col>
-              </Row>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700">Sân bay đến</label>
+              <Form.Item
+                name='toAirport'
+                rules={[{ required: true, message: 'Vui lòng chọn sân bay đến' }]}
+                className="mb-0"
+              >
+                <Select 
+                  placeholder='Chọn sân bay' 
+                  className="w-full"
+                  size="large"
+                >
+                  {airports.map((a) => (
+                    <Option key={a.id} value={a.id}>
+                      {a.airport_name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
 
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700">Ngày giờ khởi hành</label>
+              <Form.Item
+                name='departureTime'
+                rules={[{ required: true, message: 'Vui lòng chọn ngày giờ khởi hành' }]}
+                className="mb-0"
+              >
+                <DatePicker 
+                  showTime 
+                  format='YYYY-MM-DD HH:mm' 
+                  className="w-full" 
+                  size="large"
+                />
+              </Form.Item>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700">Thời gian bay (phút)</label>
+              <Form.Item
+                name='flightDuration'
+                rules={[{ required: true, message: 'Vui lòng nhập thời gian bay' }]}
+                className="mb-0"
+              >
+                <InputNumber 
+                  min={1} 
+                  className="w-full" 
+                  size="large"
+                  placeholder="Nhập thời gian bay"
+                  style={{
+                    width: '100%',
+                    height: '40px'
+                  }}
+                  controls={{
+                    upIcon: '⬆️',
+                    downIcon: '⬇️'
+                  }}
+                />
+              </Form.Item>
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <label className="block text-sm font-semibold text-gray-700">Giá vé cơ bản (VND)</label>
               <Form.Item
                 name='basePrice'
-                label='Giá vé cơ bản (VND)'
                 rules={[{ required: true, message: 'Vui lòng nhập giá vé cơ bản' }]}
+                className="mb-0"
               >
-                <InputNumber min={0} style={{ width: '100%' }} />
+                <InputNumber 
+                  min={0} 
+                  className="w-full" 
+                  size="large"
+                  placeholder="Nhập giá vé cơ bản"
+                  formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  parser={value => value?.replace(/\$\s?|(,*)/g, '') || ''}
+                  style={{
+                    width: '100%',
+                    height: '40px'
+                  }}
+                  addonAfter="VND"
+                />
               </Form.Item>
+            </div>
+          </div>
 
-              <Divider orientation='left'>Sân bay trung gian</Divider>
-              <Form.List name='intermediateAirports'>
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map(({ key, name, ...restField }) => (
-                      <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
+          <Divider className="border-purple-200">
+            <span className="text-purple-600 font-semibold">Sân bay trung gian</span>
+          </Divider>
+
+          {/* Sân bay trung gian */}
+          <Form.List name='intermediateAirports'>
+            {(fields, { add, remove }) => (
+              <div className="space-y-4">
+                {fields.map(({ key, name, ...restField }) => (
+                  <div key={key} className="p-4 border border-purple-200 rounded-lg bg-purple-50">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700">Sân bay trung gian</label>
                         <Form.Item
                           {...restField}
                           name={[name, 'id']}
                           rules={[{ required: true, message: 'Vui lòng chọn sân bay trung gian' }]}
+                          className="mb-0"
                         >
-                          <Select placeholder='Sân bay trung gian' style={{ width: 180 }}>
+                          <Select placeholder='Sân bay trung gian' size="large">
                             {airports.map((a) => (
                               <Option key={a.id} value={a.id}>
                                 {a.airport_name}
@@ -176,97 +224,140 @@ const AddFlight: React.FC = () => {
                             ))}
                           </Select>
                         </Form.Item>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700">Thời gian dừng (phút)</label>
                         <Form.Item
                           {...restField}
                           name={[name, 'stop_duration']}
                           rules={[{ required: true, message: 'Vui lòng nhập thời gian dừng' }]}
+                          className="mb-0"
                         >
-                          <InputNumber placeholder='Phút dừng' min={1} />
+                          <InputNumber placeholder='Phút dừng' min={1} className="w-full" size="large" />
                         </Form.Item>
-                        <Form.Item {...restField} name={[name, 'note']}>
-                          <Input placeholder='Ghi chú' />
-                        </Form.Item>
-                        <MinusCircleOutlined onClick={() => remove(name)} />
-                      </Space>
-                    ))}
-                    <Form.Item>
-                      <Button type='dashed' onClick={() => add()} icon={<PlusOutlined />}>
-                        Thêm sân bay
-                      </Button>
-                    </Form.Item>
-                  </>
-                )}
-              </Form.List>
+                      </div>
 
-              <Divider orientation='left'>Cấu hình hạng ghế</Divider>
-              <Form.List name='seatConfig'>
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map(({ key, name }) => (
-                      <Card
-                        key={key}
-                        size='small'
-                        style={{ marginBottom: 16 }}
-                        title={`Hạng ghế ${name + 1}`}
-                        extra={
-                          <Button danger onClick={() => remove(name)}>
-                            Xoá
-                          </Button>
-                        }
-                      >
-                        <Row gutter={12}>
-                          <Col span={8}>
-                            <Form.Item
-                              label='ID hạng'
-                              name={[name, 'ticket_class_id']}
-                              rules={[{ required: true, message: 'Vui lòng nhập ID hạng ghế' }]}
-                            >
-                              <InputNumber min={1} style={{ width: '100%' }} />
-                            </Form.Item>
-                          </Col>
-                          <Col span={8}>
-                            <Form.Item
-                              label='Tổng ghế'
-                              name={[name, 'total_seats']}
-                              rules={[{ required: true, message: 'Vui lòng nhập tổng số ghế' }]}
-                            >
-                              <InputNumber min={0} style={{ width: '100%' }} />
-                            </Form.Item>
-                          </Col>
-                          <Col span={8}>
-                            <Form.Item
-                              label='Giá vé'
-                              name={[name, 'ticket_price']}
-                              rules={[{ required: true, message: 'Vui lòng nhập giá vé' }]}
-                            >
-                              <InputNumber min={0} style={{ width: '100%' }} />
-                            </Form.Item>
-                          </Col>
-                        </Row>
-                      </Card>
-                    ))}
-                    <Form.Item>
-                      <Button type='dashed' onClick={() => add()} icon={<PlusOutlined />}>
-                        Thêm hạng ghế
-                      </Button>
-                    </Form.Item>
-                  </>
-                )}
-              </Form.List>
-
-              <Form.Item>
-                <Button type='primary' htmlType='submit' style={{ width: '100%' }}>
-                  Tạo chuyến bay
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700">Ghi chú</label>
+                        <div className="flex gap-2">
+                          <Form.Item {...restField} name={[name, 'note']} className="mb-0 flex-1">
+                            <Input placeholder='Ghi chú' size="large" />
+                          </Form.Item>
+                          <Button 
+                            danger 
+                            onClick={() => remove(name)}
+                            icon={<MinusCircleOutlined />}
+                            size="large"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <Button 
+                  type='dashed' 
+                  onClick={() => add()} 
+                  icon={<PlusOutlined />} 
+                  className="w-full border-purple-300 text-purple-600 hover:border-purple-500"
+                  size="large"
+                >
+                  Thêm sân bay trung gian
                 </Button>
-              </Form.Item>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
-    </AntdApp>
+              </div>
+            )}
+          </Form.List>
+
+          <Divider className="border-purple-200">
+            <span className="text-purple-600 font-semibold">Cấu hình hạng ghế</span>
+          </Divider>
+
+          {/* Cấu hình hạng ghế */}
+          <Form.List name='seatConfig'>
+            {(fields, { add, remove }) => (
+              <div className="space-y-4">
+                {fields.map(({ key, name }) => (
+                  <div key={key} className="p-6 border border-purple-200 rounded-lg bg-purple-50">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold text-gray-700">Hạng ghế {name + 1}</h3>
+                      <Button 
+                        danger 
+                        onClick={() => remove(name)}
+                        icon={<MinusCircleOutlined />}
+                      >
+                        Xoá
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700">ID hạng ghế</label>
+                        <Form.Item
+                          name={[name, 'ticket_class_id']}
+                          rules={[{ required: true, message: 'Vui lòng nhập ID hạng ghế' }]}
+                          className="mb-0"
+                        >
+                          <InputNumber min={1} className="w-full" size="large" placeholder="ID hạng" />
+                        </Form.Item>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700">Tổng số ghế</label>
+                        <Form.Item
+                          name={[name, 'total_seats']}
+                          rules={[{ required: true, message: 'Vui lòng nhập tổng số ghế' }]}
+                          className="mb-0"
+                        >
+                          <InputNumber min={0} className="w-full" size="large" placeholder="Số ghế" />
+                        </Form.Item>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700">Giá vé (VND)</label>
+                        <Form.Item
+                          name={[name, 'ticket_price']}
+                          rules={[{ required: true, message: 'Vui lòng nhập giá vé' }]}
+                          className="mb-0"
+                        >
+                          <InputNumber 
+                            min={0} 
+                            className="w-full" 
+                            size="large" 
+                            placeholder="Giá vé"
+                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                          />
+                        </Form.Item>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <Button 
+                  type='dashed' 
+                  onClick={() => add()} 
+                  icon={<PlusOutlined />} 
+                  className="w-full border-purple-300 text-purple-600 hover:border-purple-500"
+                  size="large"
+                >
+                  Thêm hạng ghế
+                </Button>
+              </div>
+            )}
+          </Form.List>
+
+          {/* Submit Button */}
+          <div className="flex justify-center mt-8">
+            <Button 
+              type='primary' 
+              htmlType='submit' 
+              className="bg-gradient-to-r from-purple-600 to-purple-400 text-white hover:opacity-90 h-12 px-8 text-lg font-semibold"
+              size="large"
+            >
+              Tạo chuyến bay
+            </Button>
+          </div>
+        </Form>
+      </div>
+    </div>
   );
 };
 
 export default AddFlight;
-
-
