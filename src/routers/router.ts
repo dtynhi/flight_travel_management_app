@@ -1,8 +1,4 @@
 const routers = {
-  home: {
-    pathName: '',
-    fullPath: '/'
-  },
   auth: {
     pathName: 'auth',
     login: {
@@ -79,6 +75,10 @@ const routers = {
   airport: {
     pathName: 'airport',
     fullPath: '/airport'
+  },
+  employee: {
+    pathName: 'employee',
+    fullPath: '/employee'
   }
 } as const;
 

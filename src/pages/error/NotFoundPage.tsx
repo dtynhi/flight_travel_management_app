@@ -13,7 +13,7 @@ function NotFound() {
         title='404'
         subTitle={title}
         extra={
-          <Link to={routers.home.fullPath}>
+          <Link to={routers.flightSearch.fullPath}>
             <Button type='primary'>Back Home</Button>
           </Link>
         }

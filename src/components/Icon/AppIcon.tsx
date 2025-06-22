@@ -22,6 +22,8 @@ import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import { PiCreditCard } from 'react-icons/pi';
 import { TbBuildingAirport } from 'react-icons/tb';
+import { FaUsers } from 'react-icons/fa6';
+import { VscRequestChanges } from 'react-icons/vsc';
 
 function AppIcon() {
   return <span>You have not select App Icon</span>;
@@ -67,5 +69,7 @@ AppIcon.Alert = FiAlertCircle;
 AppIcon.CheckCircle = CiCircleCheck;
 AppIcon.Analytic = MdOutlineAnalytics;
 AppIcon.Airport = TbBuildingAirport;
+AppIcon.Employee = FaUsers;
+AppIcon.Policy = VscRequestChanges;
 
 export default AppIcon;
