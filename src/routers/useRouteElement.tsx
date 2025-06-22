@@ -27,11 +27,14 @@ import Settings from '~/pages/settings';
 import FlightSearchPage from '~/pages/search/FlightSearchPage';
 import AddFlight from '~/pages/flight/AddFlight';
 import Permission from '~/components/Permission/Permission';
-import Booking from '~/pages/booking/booking';
+import FlightDetailPage from '~/pages/search/FlightSearchPage';
 
-//regulation
+// Regulation
 import RegulationPage from '~/pages/regulation/regulation';
 import { AirportPage } from '~/pages/airport';
+
+// My Tickets
+import MyTicketsPage from '~/pages/ticket/MyTicketsPage';
 
 export default function useRouteElement() {
   return useRoutes([
@@ -73,7 +76,11 @@ export default function useRouteElement() {
             { path: routers.flightSearch.pathName, element: <FlightSearchPage /> },
             {
               path: routers.booking.pathName,
-              element: <Booking />
+              element: <MyTicketsPage />
+            },
+            {
+              path: '/flight/:flightId',
+              element: <FlightDetailPage />
             },
             {
               path: routers.regulation.pathName,
@@ -82,6 +89,10 @@ export default function useRouteElement() {
             {
               path: routers.airport.pathName,
               element: <AirportPage />
+            },
+            {
+              path: '/my-tickets',
+              element: <MyTicketsPage />
             }
           ]
         }
@@ -112,3 +123,5 @@ export default function useRouteElement() {
     { path: routers.error.allError, element: <NotFound /> }
   ]);
 }
+
+

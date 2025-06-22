@@ -1,4 +1,4 @@
-import { FaAngleDown, FaPlus, FaRegClone, FaRegFileExcel, FaPlaneDeparture } from 'react-icons/fa';
+import { FaAngleDown, FaPlus, FaRegClone, FaRegFileExcel, FaPlaneDeparture, FaPlaneArrival } from 'react-icons/fa';
 import {
   MdOutlineFilterAlt,
   MdOutlineFileDownload,
@@ -65,5 +65,5 @@ AppIcon.Warning = CiWarning;
 AppIcon.Alert = FiAlertCircle;
 AppIcon.CheckCircle = CiCircleCheck;
 AppIcon.Analytic = MdOutlineAnalytics;
-
+AppIcon.Airport = FaPlaneArrival; 
 export default AppIcon;

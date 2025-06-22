@@ -79,7 +79,12 @@ const routers = {
   airport: {
     pathName: 'airport',
     fullPath: '/airport'
+  },
+  ticket: {
+    pathName: 'my-ticket',
+    fullPath: '/my-ticket'
   }
 } as const;
 
 export default routers;
+
