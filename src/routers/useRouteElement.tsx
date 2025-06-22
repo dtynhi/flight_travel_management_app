@@ -77,9 +77,10 @@ export default function useRouteElement() {
               element: <Booking />
             },
             {
-            path: '/flight/:flightId',
-            element: <FlightDetailPage />,
+              path: '/flight/:flightId',
+              element: <FlightDetailPage />
             },
+            {
               path: routers.regulation.pathName,
               element: <RegulationPage />
             },
