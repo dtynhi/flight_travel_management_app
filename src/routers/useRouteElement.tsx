@@ -28,6 +28,7 @@ import FlightSearchPage from '~/pages/search/FlightSearchPage';
 import AddFlight from '~/pages/flight/AddFlight';
 import Permission from '~/components/Permission/Permission';
 import Booking from '~/pages/booking/booking';
+import FlightDetailPage from '~/pages/search/FlightDetailPage';
 
 //regulation
 import RegulationPage from '~/pages/regulation/regulation';
@@ -76,6 +77,9 @@ export default function useRouteElement() {
               element: <Booking />
             },
             {
+            path: '/flight/:flightId',
+            element: <FlightDetailPage />,
+            },
               path: routers.regulation.pathName,
               element: <RegulationPage />
             },
