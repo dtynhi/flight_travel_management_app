@@ -41,6 +41,7 @@ import useTicketClass from '~/hooks/useTicketClass';
 import type IFlight from '~/types/app/flight.type';
 import type { IFlightTicketClass } from '~/types/app/flight.type';
 import { takeCoverage } from 'v8';
+import Permission from '~/components/Permission/Permission';
 
 const { Option } = Select;
 
@@ -494,13 +495,16 @@ const FlightDetailPage: React.FC = () => {
             Chi tiết chuyến bay {flight.id}
           </h1>
         </div>
-        <Button 
-          type="primary" 
-          icon={<EditOutlined />}
-          onClick={handleEdit}
-        >
-          Chỉnh sửa
-        </Button>
+        <Permission hasAuthority={['ADMIN']}>
+          <Button 
+            type="primary" 
+            size="small"
+            icon={<SettingOutlined />}
+            onClick={handleEdit}
+          >
+            Quản lý
+          </Button>
+        </Permission>
       </div>
 
       {/* Flight Basic Info */}
@@ -557,14 +561,16 @@ const FlightDetailPage: React.FC = () => {
             <Space>
               <span>Sân bay trung gian</span>
             </Space>
-            <Button 
-              type="primary" 
-              size="small"
-              icon={<SettingOutlined />}
-              onClick={handleManageAirports}
-            >
-              Quản lý
-            </Button>
+            <Permission hasAuthority={['ADMIN']}>
+              <Button 
+                type="primary" 
+                size="small"
+                icon={<SettingOutlined />}
+                onClick={handleManageAirports}
+              >
+                Quản lý
+              </Button>
+            </Permission>
           </div>
         } 
         className="shadow-sm"
@@ -623,14 +629,16 @@ const FlightDetailPage: React.FC = () => {
         title={
           <div className="flex justify-between items-center">
             <span>Cấu hình hạng ghế</span>
-            <Button 
-              type="primary" 
-              size="small"
-              icon={<SettingOutlined />}
-              onClick={handleManageSeatConfig}
-            >
-              Quản lý
-            </Button>
+            <Permission hasAuthority={['ADMIN']}>
+              <Button 
+                type="primary" 
+                size="small"
+                icon={<SettingOutlined />}
+                onClick={handleManageSeatConfig}
+              >
+                Quản lý
+              </Button>
+            </Permission>
           </div>
         } 
         className="shadow-sm" 
