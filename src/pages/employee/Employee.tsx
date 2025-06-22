@@ -202,7 +202,11 @@ function EmployeePage() {
           <Table.Column<IUser> title={<span className='text-sm font-semibold uppercase text-gray-500'>Email</span>} dataIndex='email' />
           <Table.Column<IUser> title={<span className='text-sm font-semibold uppercase text-gray-500'>Số điện thoại</span>} dataIndex='phone_number' />
           <Table.Column<IUser> title={<span className='text-sm font-semibold uppercase text-gray-500'>CMND/CCCD</span>} dataIndex='identification_number' />
-          <Table.Column<IUser> title={<span className='text-sm font-semibold uppercase text-gray-500'>Vai trò</span>} dataIndex='role' align='center' />
+          <Table.Column<IUser>
+            title={<span className='text-sm font-semibold uppercase text-gray-500'>Vai trò</span>}
+            align='center'
+            render={(role) => <Tag color={role === 'ADMIN' ? 'blue' : 'green'}>{role === 'ADMIN' ? 'Quản trị' : 'Nhân viên'}</Tag>}
+          />
           <Table.Column<IUser>
             title={<span className='text-sm font-semibold uppercase text-gray-500'>Trạng thái</span>}
             dataIndex='status'
