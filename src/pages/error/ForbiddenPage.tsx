@@ -11,7 +11,7 @@ function Forbidden() {
         subTitle='Sorry, you are not authorized to access this page.'
         extra={
           <>
-            <Link to={routers.home.fullPath}>
+            <Link to={routers.flightSearch.fullPath}>
               <Button type='primary'>Back Home</Button>
             </Link>
             <Link to={routers.auth.login.fullPath}>
