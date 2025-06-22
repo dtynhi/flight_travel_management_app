@@ -14,7 +14,7 @@ function Settings() {
             label: (
               <div className='flex items-center'>
                 <MdOutlineManageAccounts size={20} className='me-1' />
-                <span>Information</span>
+                <span>Thông tin</span>
               </div>
             ),
             children: <SettingInformation />
@@ -24,7 +24,7 @@ function Settings() {
             label: (
               <div className='flex items-center'>
                 <MdOutlineSecurity size={20} className='me-2' />
-                <span>Security</span>
+                <span>Bảo mật</span>
               </div>
             ),
             children: <SettingSecurity />

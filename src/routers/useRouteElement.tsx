@@ -1,10 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useRoutes } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 
 import routers from './router';
 import FallBack from '~/components/FallBack';
-// Permission
 import { RejectRoute, ProtectedRoute } from './PermissionRoute';
 
 // Layout
@@ -16,24 +15,26 @@ import Login from '~/pages/auth/login';
 import Register from '~/pages/auth/register';
 import ResetPassword from '~/pages/auth/reset-password';
 
-// Error page
+// Error pages
 import NotFound from '~/pages/error/NotFoundPage';
 import Forbidden from '~/pages/error/ForbiddenPage';
 
-// Page
+// App pages
 import Home from '~/pages/home/Home';
-const Settings = lazy(() => import('~/pages/settings/Settings'));
-
-// Booking
+import ReportYear from '~/pages/report/ReportYear';
+import ReportMonth from '~/pages/report/ReportMonth';
+import Settings from '~/pages/settings';
+import FlightSearchPage from '~/pages/search/FlightSearchPage';
+import AddFlight from '~/pages/flight/AddFlight';
+import Permission from '~/components/Permission/Permission';
 import Booking from '~/pages/booking/booking';
 
 //regulation
 import RegulationPage from '~/pages/regulation/regulation';
-
+import { AirportPage } from '~/pages/airport';
 
 export default function useRouteElement() {
   return useRoutes([
-    // Main Layout Route
     {
       path: '',
       element: <ProtectedRoute />,
@@ -52,18 +53,40 @@ export default function useRouteElement() {
               )
             },
             {
+              path: routers.report.pathName,
+              element: <Permission.Outlet hasAuthority={['ADMIN', 'EMPLOYEE']} fallback={<Forbidden />} />,
+              children: [
+                {
+                  path: routers.report.monthly.pathName,
+                  element: <ReportMonth />
+                },
+                {
+                  path: routers.report.yearly.pathName,
+                  element: <ReportYear />
+                }
+              ]
+            },
+            {
+              path: routers.addFlight.pathName,
+              element: <AddFlight />
+            },
+            { path: routers.flightSearch.pathName, element: <FlightSearchPage /> },
+            {
               path: routers.booking.pathName,
               element: <Booking />
             },
             {
               path: routers.regulation.pathName,
               element: <RegulationPage />
+            },
+            {
+              path: routers.airport.pathName,
+              element: <AirportPage />
             }
           ]
         }
       ]
     },
-
     {
       path: '',
       element: <RejectRoute />,
@@ -84,7 +107,6 @@ export default function useRouteElement() {
         }
       ]
     },
-    // Error Route
     { path: routers.error.forbidden, element: <Forbidden /> },
     { path: routers.error.notFound, element: <NotFound /> },
     { path: routers.error.allError, element: <NotFound /> }
