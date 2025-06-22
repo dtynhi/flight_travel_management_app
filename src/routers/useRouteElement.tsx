@@ -31,7 +31,7 @@ import Booking from '~/pages/booking/booking';
 
 //regulation
 import RegulationPage from '~/pages/regulation/regulation';
-
+import { AirportPage } from '~/pages/airport';
 
 export default function useRouteElement() {
   return useRoutes([
@@ -66,7 +66,10 @@ export default function useRouteElement() {
                 }
               ]
             },
-            { path: routers.addFlight.pathName, element: <AddFlight /> },
+            {
+              path: routers.addFlight.pathName,
+              element: <AddFlight />
+            },
             { path: routers.flightSearch.pathName, element: <FlightSearchPage /> },
             {
               path: routers.booking.pathName,
@@ -75,6 +78,10 @@ export default function useRouteElement() {
             {
               path: routers.regulation.pathName,
               element: <RegulationPage />
+            },
+            {
+              path: routers.airport.pathName,
+              element: <AirportPage />
             }
           ]
         }
