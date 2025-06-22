@@ -30,10 +30,6 @@ const routers = {
       fullPath: '/auth/pending-approval'
     }
   },
-  booking: {
-    pathName: 'booking',
-    fullPath: '/booking'
-  },
   report: {
     pathName: 'report',
     fullPath: '/report',
@@ -71,6 +67,18 @@ const routers = {
     serverError: '/5xx',
     forbidden: '/403',
     notFound: '/404'
+  },
+  booking: {
+    pathName: 'booking',
+    fullPath: '/booking'
+  },
+  regulation: {
+    pathName: 'regulations',
+    fullPath: '/regulations'
+  },
+  airport: {
+    pathName: 'airport',
+    fullPath: '/airport'
   }
 } as const;
 

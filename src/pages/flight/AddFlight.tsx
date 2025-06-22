@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Form, Input, Select, DatePicker, InputNumber, Button, Space, Divider, Row, Col, Typography, message, App as AntdApp } from 'antd';
+import {
+  Card,
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  InputNumber,
+  Button,
+  Space,
+  Divider,
+  Row,
+  Col,
+  Typography,
+  message,
+  App as AntdApp
+} from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const AddFlight: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [airports, setAirports] = useState<any[]>([]);
   const [form] = Form.useForm();
 
@@ -22,50 +36,51 @@ const AddFlight: React.FC = () => {
       });
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = (values: any) => {
-    const basePrice = parseFloat(values.basePrice);
+    const basePrice = Number(values.basePrice);
 
     if (values.fromAirport === values.toAirport) {
       message.error('Sân bay đi và đến không được trùng nhau!');
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (values.intermediateAirports?.some((stop: any) => stop.id === values.fromAirport || stop.id === values.toAirport)) {
+    if (
+      values.intermediateAirports?.some(
+        (stop: any) => stop.id === values.fromAirport || stop.id === values.toAirport
+      )
+    ) {
       message.error('Sân bay trung gian không được trùng sân bay đi/đến!');
       return;
     }
 
     const payload = {
-      from_airport: parseInt(values.fromAirport),
-      to_airport: parseInt(values.toAirport),
+      from_airport: Number(values.fromAirport),
+      to_airport: Number(values.toAirport),
       departure_time: values.departureTime.format('YYYY-MM-DDTHH:mm:ss'),
-      flight_time_minutes: parseInt(values.flightDuration),
+      flight_time_minutes: Number(values.flightDuration),
       base_price: basePrice,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       intermediate_airports: (values.intermediateAirports || []).map((stop: any, idx: number) => ({
-        id: parseInt(stop.id),
-        stop_duration: parseInt(stop.stop_duration),
+        id: Number(stop.id),
+        stop_duration: Number(stop.stop_duration),
         stop_order: idx + 1,
         note: stop.note || ''
       })),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      seat_config: values.seatConfig.map((s: any) => ({
-        ticket_class_id: parseInt(s.ticket_class_id),
-        total_seats: parseInt(s.total_seats),
-        available_seats: parseInt(s.total_seats),
-        ticket_price: parseFloat(s.ticket_price)
+      seat_config: (values.seatConfig || []).map((s: any) => ({
+        ticket_class_id: Number(s.ticket_class_id),
+        total_seats: Number(s.total_seats),
+        available_seats: Number(s.total_seats),
+        ticket_price: Number(s.ticket_price)
       }))
     };
 
     axios
-      .post('http://localhost:5000/api/v1/flight/create', payload)
+      .post('http://localhost:5000/api/v1/flight/', payload, { withCredentials: true })
       .then(() => {
         message.success('Tạo chuyến bay thành công');
         form.resetFields();
       })
       .catch((err) => {
+        console.error('API Error:', err.response?.data || err.message);
         message.error(err.response?.data?.message || 'Lỗi tạo chuyến bay, vui lòng thử lại!');
       });
   };
@@ -82,7 +97,11 @@ const AddFlight: React.FC = () => {
             <Form form={form} layout='vertical' onFinish={onFinish}>
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item name='fromAirport' label='Sân bay đi' rules={[{ required: true }]}>
+                  <Form.Item
+                    name='fromAirport'
+                    label='Sân bay đi'
+                    rules={[{ required: true, message: 'Vui lòng chọn sân bay đi' }]}
+                  >
                     <Select placeholder='Chọn sân bay'>
                       {airports.map((a) => (
                         <Option key={a.id} value={a.id}>
@@ -93,7 +112,11 @@ const AddFlight: React.FC = () => {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item name='toAirport' label='Sân bay đến' rules={[{ required: true }]}>
+                  <Form.Item
+                    name='toAirport'
+                    label='Sân bay đến'
+                    rules={[{ required: true, message: 'Vui lòng chọn sân bay đến' }]}
+                  >
                     <Select placeholder='Chọn sân bay'>
                       {airports.map((a) => (
                         <Option key={a.id} value={a.id}>
@@ -107,18 +130,30 @@ const AddFlight: React.FC = () => {
 
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item name='departureTime' label='Ngày giờ khởi hành' rules={[{ required: true }]}>
+                  <Form.Item
+                    name='departureTime'
+                    label='Ngày giờ khởi hành'
+                    rules={[{ required: true, message: 'Vui lòng chọn ngày giờ khởi hành' }]}
+                  >
                     <DatePicker showTime format='YYYY-MM-DD HH:mm' style={{ width: '100%' }} />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item name='flightDuration' label='Thời gian bay (phút)' rules={[{ required: true }]}>
+                  <Form.Item
+                    name='flightDuration'
+                    label='Thời gian bay (phút)'
+                    rules={[{ required: true, message: 'Vui lòng nhập thời gian bay' }]}
+                  >
                     <InputNumber min={1} style={{ width: '100%' }} />
                   </Form.Item>
                 </Col>
               </Row>
 
-              <Form.Item name='basePrice' label='Giá vé cơ bản (VND)' rules={[{ required: true }]}>
+              <Form.Item
+                name='basePrice'
+                label='Giá vé cơ bản (VND)'
+                rules={[{ required: true, message: 'Vui lòng nhập giá vé cơ bản' }]}
+              >
                 <InputNumber min={0} style={{ width: '100%' }} />
               </Form.Item>
 
@@ -128,7 +163,11 @@ const AddFlight: React.FC = () => {
                   <>
                     {fields.map(({ key, name, ...restField }) => (
                       <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
-                        <Form.Item {...restField} name={[name, 'id']} rules={[{ required: true }]}>
+                        <Form.Item
+                          {...restField}
+                          name={[name, 'id']}
+                          rules={[{ required: true, message: 'Vui lòng chọn sân bay trung gian' }]}
+                        >
                           <Select placeholder='Sân bay trung gian' style={{ width: 180 }}>
                             {airports.map((a) => (
                               <Option key={a.id} value={a.id}>
@@ -137,7 +176,11 @@ const AddFlight: React.FC = () => {
                             ))}
                           </Select>
                         </Form.Item>
-                        <Form.Item {...restField} name={[name, 'stop_duration']} rules={[{ required: true }]}>
+                        <Form.Item
+                          {...restField}
+                          name={[name, 'stop_duration']}
+                          rules={[{ required: true, message: 'Vui lòng nhập thời gian dừng' }]}
+                        >
                           <InputNumber placeholder='Phút dừng' min={1} />
                         </Form.Item>
                         <Form.Item {...restField} name={[name, 'note']}>
@@ -173,17 +216,29 @@ const AddFlight: React.FC = () => {
                       >
                         <Row gutter={12}>
                           <Col span={8}>
-                            <Form.Item label='ID hạng' name={[name, 'ticket_class_id']} rules={[{ required: true }]}>
+                            <Form.Item
+                              label='ID hạng'
+                              name={[name, 'ticket_class_id']}
+                              rules={[{ required: true, message: 'Vui lòng nhập ID hạng ghế' }]}
+                            >
                               <InputNumber min={1} style={{ width: '100%' }} />
                             </Form.Item>
                           </Col>
                           <Col span={8}>
-                            <Form.Item label='Tổng ghế' name={[name, 'total_seats']} rules={[{ required: true }]}>
+                            <Form.Item
+                              label='Tổng ghế'
+                              name={[name, 'total_seats']}
+                              rules={[{ required: true, message: 'Vui lòng nhập tổng số ghế' }]}
+                            >
                               <InputNumber min={0} style={{ width: '100%' }} />
                             </Form.Item>
                           </Col>
                           <Col span={8}>
-                            <Form.Item label='Giá vé' name={[name, 'ticket_price']} rules={[{ required: true }]}>
+                            <Form.Item
+                              label='Giá vé'
+                              name={[name, 'ticket_price']}
+                              rules={[{ required: true, message: 'Vui lòng nhập giá vé' }]}
+                            >
                               <InputNumber min={0} style={{ width: '100%' }} />
                             </Form.Item>
                           </Col>
@@ -213,3 +268,5 @@ const AddFlight: React.FC = () => {
 };
 
 export default AddFlight;
+
+

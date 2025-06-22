@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { LuUser2 } from 'react-icons/lu';
+import { LuUser } from 'react-icons/lu';
 import { IoIosLogOut } from 'react-icons/io';
 import { Popover } from 'antd';
 
@@ -18,7 +18,7 @@ function HeaderAccountCenter() {
     <div>
       <Link onClick={() => setOpenPopover(false)} to={routers.settings.fullPath}>
         <div className='flex items-center text-[16px] text-sm py-2 px-4 cursor-pointer hover:bg-zinc-100 text-gray-600 min-w-[200px]'>
-          <LuUser2 size={16} />
+          <LuUser size={16} />
           <span className='ms-3'>Accounts setting</span>
         </div>
       </Link>

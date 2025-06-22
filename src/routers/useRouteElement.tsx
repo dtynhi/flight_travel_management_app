@@ -26,11 +26,13 @@ import ReportMonth from '~/pages/report/ReportMonth';
 import Settings from '~/pages/settings';
 import FlightSearchPage from '~/pages/search/FlightSearchPage';
 import AddFlight from '~/pages/flight/AddFlight';
-import FlightList from '~/pages/flight/FlightList';
-import EditFlight from '~/pages/flight/EditFlight';
 import Permission from '~/components/Permission/Permission';
 import Booking from '~/pages/booking/booking';
 import FlightDetailPage from '~/pages/search/FlightDetailPage';
+
+//regulation
+import RegulationPage from '~/pages/regulation/regulation';
+import { AirportPage } from '~/pages/airport';
 
 export default function useRouteElement() {
   return useRoutes([
@@ -65,9 +67,10 @@ export default function useRouteElement() {
                 }
               ]
             },
-            { path: routers.addFlight.pathName, element: <AddFlight /> },
-            { path: routers.flightList.pathName, element: <FlightList /> },
-            { path: routers.editFlight.pathName, element: <EditFlight /> },
+            {
+              path: routers.addFlight.pathName,
+              element: <AddFlight />
+            },
             { path: routers.flightSearch.pathName, element: <FlightSearchPage /> },
             {
               path: routers.booking.pathName,
@@ -77,6 +80,13 @@ export default function useRouteElement() {
             path: '/flight/:flightId',
             element: <FlightDetailPage />,
             },
+              path: routers.regulation.pathName,
+              element: <RegulationPage />
+            },
+            {
+              path: routers.airport.pathName,
+              element: <AirportPage />
+            }
           ]
         }
       ]
