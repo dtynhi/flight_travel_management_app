@@ -30,6 +30,7 @@ import FlightList from '~/pages/flight/FlightList';
 import EditFlight from '~/pages/flight/EditFlight';
 import Permission from '~/components/Permission/Permission';
 import Booking from '~/pages/booking/booking';
+import FlightDetailPage from '~/pages/search/FlightDetailPage';
 
 export default function useRouteElement() {
   return useRoutes([
@@ -71,7 +72,11 @@ export default function useRouteElement() {
             {
               path: routers.booking.pathName,
               element: <Booking />
-            }
+            },
+            {
+            path: '/flight/:flightId',
+            element: <FlightDetailPage />,
+            },
           ]
         }
       ]
