@@ -43,7 +43,8 @@ function SideBar() {
       {
         key: routers.booking.fullPath,
         icon: <AppIcon.Plane size={18} />,
-        label: 'Đặt vé máy bay'
+        label: 'Đặt vé máy bay',
+        authorities: ['USER']
       },
       {
         key: routers.airport.fullPath,
