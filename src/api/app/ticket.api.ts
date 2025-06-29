@@ -15,8 +15,8 @@ const ticketApi = {
     return http.post<SuccessResponse<unknown>>('/v1/tickets/book', data);
   },
 
-  getMyTickets: async () => {
-    return http.get<SuccessResponse<unknown[]>>('/v1/tickets/my');
+  getMyTickets: async (email: string) => {
+    return http.get<SuccessResponse<unknown[]>>(`/v1/tickets/my?email=${encodeURIComponent(email)}`);
   },
 
   getAvailableFlights: async () => {
