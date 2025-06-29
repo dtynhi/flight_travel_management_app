@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import ticketApi from '~/api/app/ticket.api';
 
 function BookingPage() {
   const queryClient = useQueryClient();
+
   const [formData, setFormData] = useState({
     flight_id: '',
-    passenger_name: '',
     id_number: '',
     phone_number: '',
     email: '',
+    passenger_name: '', // 👈 THÊM TRƯỜNG NÀY
     ticket_class_id: 2 // Mặc định Hạng 2
   });
 
@@ -19,11 +21,18 @@ function BookingPage() {
     queryFn: ticketApi.getAvailableFlights
   });
 
-  const flights = (data?.data?.data as { id: number; departure_time: string; base_price: number }[]) || [];
+  // Sửa lại để lấy đúng dữ liệu chuyến bay
+  const flights = Array.isArray(data?.data?.data) ? data.data.data : [];
 
   const mutation = useMutation({
-    mutationFn: (data: { flight_id: number; ticket_class_id: number; passenger_name: string; id_number: string; phone_number: string; email: string }) =>
-      ticketApi.bookTicket(data),
+    mutationFn: (data: {
+      flight_id: number;
+      ticket_class_id: number;
+      id_number: string;
+      phone_number: string;
+      email: string;
+      passenger_name: string; // 👈 THÊM VÀO MUTATION TYPE
+    }) => ticketApi.bookTicket(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['available-flights'] });
       alert('🎉 Đặt vé thành công!');
@@ -40,7 +49,11 @@ function BookingPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutation.mutate({ ...formData, flight_id: Number(formData.flight_id), ticket_class_id: Number(formData.ticket_class_id) });
+    mutation.mutate({
+      ...formData,
+      flight_id: Number(formData.flight_id),
+      ticket_class_id: Number(formData.ticket_class_id)
+    });
   };
 
   return (
@@ -51,9 +64,10 @@ function BookingPage() {
           <label className='block font-semibold mb-1'>Chuyến bay</label>
           <select name='flight_id' className='w-full border rounded p-2' onChange={handleChange} value={formData.flight_id} required>
             <option value=''>-- Chọn chuyến bay --</option>
-            {flights.map((f: { id: number; departure_time: string; base_price: number }) => (
+            {flights.length === 0 && <option disabled>Không có chuyến bay khả dụng</option>}
+            {flights.map((f: any) => (
               <option key={f.id} value={f.id}>
-                #{f.id} - {f.departure_time} - {f.base_price.toLocaleString()} VNĐ
+                #{f.id} - {f.departure_time} - {f.base_price?.toLocaleString?.() ?? f.base_price} VNĐ
               </option>
             ))}
           </select>
@@ -67,7 +81,16 @@ function BookingPage() {
           onChange={handleChange}
           required
         />
-        <input name='id_number' placeholder='CMND/CCCD' className='w-full border p-2 rounded' value={formData.id_number} onChange={handleChange} required />
+
+        <input
+          name='id_number'
+          placeholder='CMND/CCCD'
+          className='w-full border p-2 rounded'
+          value={formData.id_number}
+          onChange={handleChange}
+          required
+        />
+
         <input
           name='phone_number'
           placeholder='Số điện thoại'
@@ -76,7 +99,16 @@ function BookingPage() {
           onChange={handleChange}
           required
         />
-        <input name='email' type='email' placeholder='Email' className='w-full border p-2 rounded' value={formData.email} onChange={handleChange} required />
+
+        <input
+          name='email'
+          type='email'
+          placeholder='Email'
+          className='w-full border p-2 rounded'
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
 
         <div>
           <label className='block font-semibold mb-1'>Hạng vé</label>
