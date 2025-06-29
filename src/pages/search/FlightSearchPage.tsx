@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'antd';
 
 import type { IFlightSearchParams } from '~/types/app/flight-search.type';
@@ -10,7 +10,12 @@ const FlightSearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useState<IFlightSearchParams>({});
 
   const { airports } = useAirport();
-  const { searchResults: flights, loading, searchPerformed, searchFlights, clearResults } = useFlightSearch();
+  const { searchResults: flights, loading, searchPerformed, searchFlights, clearResults, loadAllFlights } = useFlightSearch();
+
+  // Load all flights when component mounts - only once
+  useEffect(() => {
+    loadAllFlights();
+  }, [loadAllFlights]);
 
   const handleParamChange = (field: keyof IFlightSearchParams, value: string) => {
     setSearchParams((prev) => ({ ...prev, [field]: value }));
@@ -46,11 +51,9 @@ const FlightSearchPage: React.FC = () => {
       </Card>
 
       {/* Results Table */}
-      {searchPerformed && (
-        <Card className='shadow-sm'>
-          <FlightResultsTable flights={flights} loading={loading} searchPerformed={searchPerformed} searchParams={searchParams} />
-        </Card>
-      )}
+      <Card className='shadow-sm'>
+        <FlightResultsTable flights={flights} loading={loading} searchPerformed={searchPerformed} searchParams={searchParams} />
+      </Card>
     </div>
   );
 };

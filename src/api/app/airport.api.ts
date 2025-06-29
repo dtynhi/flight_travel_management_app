@@ -5,7 +5,7 @@ import IAirport from '~/types/app/airport.type';
 const airportApi = {
   // GET /api/v1/airport/
   getAllAirports: async () => {
-    return await http.get<SuccessResponse<IAirport[]>>('/v1/airport/');
+    return await http.get<SuccessResponse<IAirport[]>>('/v1/airport');
   },
 
   // GET /api/v1/airport/{airport_id}
@@ -34,6 +34,11 @@ const airportApi = {
   // PATCH /api/v1/airport/{airport_id}/status (Protected - Admin only)
   updateAirportStatus: async (airportId: number, status: string) => {
     return await http.patch<SuccessResponse<IAirport>>(`/v1/airport/${airportId}/status`, { status });
+  },
+
+  // DELETE /api/v1/airport/{airport_id} (Protected - Admin only)
+  deleteAirport: async (airportId: number) => {
+    return await http.delete<SuccessResponse<IAirport>>(`/v1/airport/${airportId}`);
   }
 };
 
