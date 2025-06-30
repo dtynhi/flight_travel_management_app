@@ -21,8 +21,15 @@ function BookingPage() {
     queryFn: ticketApi.getAvailableFlights
   });
 
+  // Log dữ liệu trả về để debug
+  // console.log('API available-flights:', data);
+
   // Sửa lại để lấy đúng dữ liệu chuyến bay
-  const flights = Array.isArray(data?.data?.data) ? data.data.data : [];
+  const flights = Array.isArray(data?.data?.data)
+    ? data.data.data
+    : Array.isArray(data?.data)
+      ? data.data
+      : [];
 
   const mutation = useMutation({
     mutationFn: (data: {
@@ -64,7 +71,8 @@ function BookingPage() {
           <label className='block font-semibold mb-1'>Chuyến bay</label>
           <select name='flight_id' className='w-full border rounded p-2' onChange={handleChange} value={formData.flight_id} required>
             <option value=''>-- Chọn chuyến bay --</option>
-            {flights.length === 0 && <option disabled>Không có chuyến bay khả dụng</option>}
+            {isLoading && <option disabled>Đang tải chuyến bay...</option>}
+            {!isLoading && flights.length === 0 && <option disabled>Không có chuyến bay khả dụng</option>}
             {flights.map((f: any) => (
               <option key={f.id} value={f.id}>
                 #{f.id} - {f.departure_time} - {f.base_price?.toLocaleString?.() ?? f.base_price} VNĐ
