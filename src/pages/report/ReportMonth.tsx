@@ -14,6 +14,7 @@ interface MonthlyReport {
   month: number;
   total_tickets_sold: number;
   total_revenue: number;
+  percentage?: number; // Thêm trường tỉ lệ
 }
 
 const ReportMonth = () => {
@@ -26,12 +27,18 @@ const ReportMonth = () => {
   });
 
   const columns = [
-    { title: 'Mã báo cáo', dataIndex: 'id' },
+    { title: 'Mã chuyến bay', dataIndex: 'id' },
     { title: 'Số vé đã bán', dataIndex: 'total_tickets_sold' },
     {
       title: 'Doanh thu',
       dataIndex: 'total_revenue',
       render: (value: number) => `${value.toLocaleString('vi-VN')} ₫`,
+    },
+    {
+      title: 'Tỉ lệ',
+      dataIndex: 'percentage',
+      render: (value?: number) =>
+        value !== undefined && value !== null ? `${value}%` : '',
     },
   ];
 
@@ -47,6 +54,7 @@ const ReportMonth = () => {
       'Mã báo cáo': item.id,
       'Số vé đã bán': item.total_tickets_sold,
       'Doanh thu': `${item.total_revenue.toLocaleString('vi-VN')} ₫`,
+      'Tỉ lệ': item.percentage !== undefined && item.percentage !== null ? `${item.percentage}%` : '',
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
