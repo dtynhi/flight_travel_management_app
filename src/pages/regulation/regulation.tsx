@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Button } from 'antd';
 
 interface Regulation {
-  number_of_airports: number;
   minimum_flight_duration: number;
   max_intermediate_stops: number;
   minimum_stop_duration: number;
@@ -13,7 +12,6 @@ interface Regulation {
 
 const RegulationPage = () => {
   const [formData, setFormData] = useState<Regulation>({
-    number_of_airports: 0,
     minimum_flight_duration: 0,
     max_intermediate_stops: 0,
     minimum_stop_duration: 0,
@@ -26,9 +24,15 @@ const RegulationPage = () => {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    axios.get('/api/v1/regulations')
+    axios.get('/api/v1/system-parameters')
       .then((res) => {
-        setFormData(res.data);
+        // Lấy đúng object đầu tiên trong mảng parameters
+        const param = res.data?.data?.parameters?.[0];
+        if (param) {
+          setFormData(param);
+        } else {
+          setMessage('Không có dữ liệu quy định hệ thống.');
+        }
       })
       .catch(() => {
         setMessage('Không thể tải dữ liệu quy định hệ thống.');
@@ -48,12 +52,18 @@ const RegulationPage = () => {
     setSaving(true);
     setMessage('');
     
-    axios.put('/api/v1/regulations', formData)
+    axios.put('/api/v1/system-parameters', formData)
       .then(() => {
         setMessage('Cập nhật quy định thành công!');
       })
-      .catch(() => {
-        setMessage('Cập nhật thất bại. Vui lòng thử lại.');
+      .catch((err) => {
+        // Log lỗi chi tiết để debug
+        console.error('PUT error:', err, err?.response);
+        setMessage(
+          err?.response?.data?.message ||
+          err?.message ||
+          'Cập nhật thất bại. Vui lòng thử lại.'
+        );
       })
       .finally(() => setSaving(false));
   };
@@ -78,13 +88,6 @@ const RegulationPage = () => {
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-2xl">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormItem
-              label="Số lượng sân bay (QĐ1)"
-              name="number_of_airports"
-              value={formData.number_of_airports}
-              onChange={handleChange}
-            />
-
             <FormItem
               label="Thời gian bay tối thiểu (phút) (QĐ1)"
               name="minimum_flight_duration"

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
@@ -64,8 +65,7 @@ const AddFlight: React.FC = () => {
       seat_config: (values.seatConfig || []).map((s: any) => ({
         ticket_class_id: Number(s.ticket_class_id),
         total_seats: Number(s.total_seats),
-        available_seats: Number(s.total_seats),
-        ticket_price: Number(s.ticket_price)
+        available_seats: Number(s.total_seats)
       }))
     };
 
@@ -308,23 +308,6 @@ const AddFlight: React.FC = () => {
                           className="mb-0"
                         >
                           <InputNumber min={0} className="w-full" size="large" placeholder="Số ghế" />
-                        </Form.Item>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="block text-sm font-semibold text-gray-700">Giá vé (VND)</label>
-                        <Form.Item
-                          name={[name, 'ticket_price']}
-                          rules={[{ required: true, message: 'Vui lòng nhập giá vé' }]}
-                          className="mb-0"
-                        >
-                          <InputNumber 
-                            min={0} 
-                            className="w-full" 
-                            size="large" 
-                            placeholder="Giá vé"
-                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          />
                         </Form.Item>
                       </div>
                     </div>

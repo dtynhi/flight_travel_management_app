@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SuccessResponse } from '~/types/utils.type';
 import http from '../http';
 import type { IFlightSearchParams } from '~/types/app/flight-search.type';
@@ -40,6 +42,7 @@ const flightApi = {
 
   // POST /api/v1/flight/ (Protected - Admin only)
   createFlight: async (flightData: IFlight) => {
+    // Đảm bảo flightData.seat_config không có ticket_price
     return await http.post<SuccessResponse<IFlight>>('/v1/flight/', flightData);
   },
 
